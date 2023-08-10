@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 @ConfigurationProperties(prefix = "cors")
 public class CorsProperties {
-    private String allowedOrigins = "https://port-0-portfolio-v2-backend-3prof2lll3bfr1i.sel3.cloudtype.app/";
+    private String allowedOrigins;
     private String allowedMethods;
     private String allowedHeaders;
     private Long maxAge;
