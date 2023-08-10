@@ -1,5 +1,5 @@
 server:
-  port: 8088
+  port: 8080
 spring:
   servlet:
     multipart:
@@ -10,9 +10,9 @@ spring:
 
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://localhost:3306/oieho
+    url: jdbc:mariadb://mariadb:3306/oieho
     username: root
-    password: root
+    password: RooT3%3
       
   jpa:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
