@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8083
 spring:
   servlet:
     multipart:
@@ -10,9 +10,9 @@ spring:
 
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://mariadb:3306/oieho
+    url: jdbc:mariadb://svc.sel3.cloudtype.app:31795/oieho
     username: root
-    password: mariadb-root-password
+    password: RooT3%3
       
   jpa:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
@@ -78,8 +78,8 @@ spring:
           starttls:
             enable: true
 jwt:
-  secret: jwt-secret
-  authToken: jwt-secret
+  secret: 236979CB6F1AD6B6A6184A31E6BE37DB3818CC36871E26235DD67DCFE4041492
+  authToken: 236979CB6F1AD6B6A6184A31E6BE37DB3818CC36871E26235DD67DCFE4041492
   accessExpire: 30000000
   refreshExpire: 6000000
   
