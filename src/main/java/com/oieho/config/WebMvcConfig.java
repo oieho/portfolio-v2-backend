@@ -13,7 +13,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 		// 모든 경로에 대해
 		registry.addMapping("/**")
 		// Origin이 http:localhost:3000에 대해
-		.allowedOrigins("portfolio-v2-frontend:80")
+		.allowedOrigins("https://web-portfolio-v2-frontend-3prof2lll3bfr1i.sel3.cloudtype.app/")
 		// GET, POST, PUT, PATCH, DELETE, OPTIONS 메서드를 허용한다.
 		.allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
 		.allowedHeaders("*")
