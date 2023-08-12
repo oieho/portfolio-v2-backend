@@ -11,21 +11,23 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.oieho.entity.Category;
+import com.oieho.entity.Member;
 import com.oieho.entity.WorkBoard;
 import com.oieho.entity.WorkImage;
 import com.oieho.repository.WorkBoardRepository;
+import com.oieho.repository.WorkImageRepository;
 import com.oieho.service.WorkBoardService;
 
 import lombok.RequiredArgsConstructor;
@@ -34,7 +36,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Controller
 @RequestMapping("/boards")
-@CrossOrigin(origins = "https://web-portfolio-v2-frontend-3prof2lll3bfr1i.sel3.cloudtype.app/")
 @RequiredArgsConstructor
 public class WorkBoardController {
 	private final WorkBoardService boardService;
