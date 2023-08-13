@@ -22,7 +22,7 @@ public class BackendApplication {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**").allowedOrigins("https://web-portfolio-v2-frontend-3prof2lll3bfr1i.sel3.cloudtype.app/");
+                registry.addMapping("/**").allowedOrigins("https://web-portfolio-v2-frontend-3prof2lll3bfr1i.sel3.cloudtype.app");
             }
         };
     }
