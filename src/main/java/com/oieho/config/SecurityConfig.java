@@ -40,12 +40,28 @@ public class SecurityConfig {
 	private final MemberRepository memberRepository;
 	private final AppProperties appProperties;
 	private final JwtTokenProvider jwtTokenProvider;
+	private final CorsProperties corsProperties;
 	private final RefreshTokenRepository refreshTokenRepository;
 	private final CustomUserDetailsService cusUserDetailsService;
 	private final CustomOAuth2UserService oAuth2UserService;
 	private final TokenAccessDeniedHandler tokenAccessDeniedHandler;
 	private final OAuth2AuthorizationRequestBasedOnCookieRepository oAuth2AuthorizationRequestBasedOnCookieRepository;
 
+    @Bean
+    public UrlBasedCorsConfigurationSource corsConfigurationSource() {
+        UrlBasedCorsConfigurationSource corsConfigSource = new UrlBasedCorsConfigurationSource();
+
+        CorsConfiguration corsConfig = new CorsConfiguration();
+        corsConfig.setAllowedHeaders(Arrays.asList(corsProperties.getAllowedHeaders().split(",")));
+        corsConfig.setAllowedMethods(Arrays.asList(corsProperties.getAllowedMethods().split(",")));
+        corsConfig.setAllowedOrigins(Arrays.asList(corsProperties.getAllowedOrigins().split(",")));
+        corsConfig.setAllowCredentials(true);
+        corsConfig.setMaxAge(corsConfig.getMaxAge());
+
+        corsConfigSource.registerCorsConfiguration("/**", corsConfig);
+        return corsConfigSource;
+    }
+	
 	@Bean
 	static PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
