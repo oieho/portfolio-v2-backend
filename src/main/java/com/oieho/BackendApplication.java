@@ -22,7 +22,7 @@ public class BackendApplication {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**").allowedOrigins("https://relaxed-biscuit-61dc25.netlify.app");
+                registry.addMapping("/**").allowedOrigins("https://relaxed-biscuit-61dc25.netlify.app/").allowedMethods("*");
             }
         };
     }
