@@ -17,4 +17,13 @@ public class BackendApplication {
 		SpringApplication.run(BackendApplication.class, args);
 	}
 
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**").allowedOrigins("https://port-0-portfolio-v2-backend-3prof2lll3bfr1i.sel3.cloudtype.app");
+            }
+        };
+    }
 }
