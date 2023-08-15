@@ -10,7 +10,7 @@ spring:
 
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://mariadb:3306/oieho
+    url: jdbc:mariadb://svc.sel3.cloudtype.app:31795/oieho
     username: root
     password: ${MPW}
       
