@@ -14,7 +14,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.CorsUtils;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.oieho.entity.RoleType;
 import com.oieho.jwt.JwtTokenProvider;
@@ -61,6 +63,17 @@ public class SecurityConfig {
 		return new OAuth2AuthenticationFailureHandler(oAuth2AuthorizationRequestBasedOnCookieRepository);
 	}
 
+	@Bean
+	public CorsConfigurationSource corsConfigurationSource() {
+	    CorsConfiguration configuration = new CorsConfiguration();
+	    configuration.addAllowedOrigin("https://oieho.netlify.app"); // 프론트엔드 도메인
+	    configuration.addAllowedHeader("*");
+	    configuration.addAllowedMethod("*");
+	    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+	    source.registerCorsConfiguration("/**", configuration);
+	    return source;
+	}
+	
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
