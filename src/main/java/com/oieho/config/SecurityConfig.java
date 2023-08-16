@@ -78,13 +78,7 @@ public class SecurityConfig {
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
 		http
-        .cors()
-            .configurationSource(request -> {
-                CorsConfiguration config = new CorsConfiguration();
-                config.setAllowedOrigins(Arrays.asList("https://oieho.netlify.app"));
-                config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
-                return config;
-            }).and()
+        .cors().and()
         .sessionManagement()
         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
     .and()
