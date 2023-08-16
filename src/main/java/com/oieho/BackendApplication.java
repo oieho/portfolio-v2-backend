@@ -22,7 +22,7 @@ public class BackendApplication {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**").allowedOriginPatterns("*").allowedMethods("*").allowedHeaders("*").exposedHeaders("*").allowCredentials(true).exposedHeaders("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials");
+                registry.addMapping("/**").allowedOriginPatterns("*").allowedMethods("*").allowedHeaders("*").exposedHeaders("*").allowCredentials(true);
             }
         };
     }
