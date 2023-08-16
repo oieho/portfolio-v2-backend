@@ -92,7 +92,7 @@ cors:
 app:
   oauth2:
     authorizedRedirectUris:
-      - https://netlify.app/oauth/redirect
+      - https://oieho.netlify.app/oauth/redirect
       
 logging:
   level:
