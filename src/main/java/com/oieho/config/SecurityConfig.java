@@ -40,7 +40,6 @@ public class SecurityConfig {
 	private final MemberRepository memberRepository;
 	private final AppProperties appProperties;
 	private final JwtTokenProvider jwtTokenProvider;
-	private final CorsConfig corsConfig;
 	private final RefreshTokenRepository refreshTokenRepository;
 	private final CustomUserDetailsService cusUserDetailsService;
 	private final CustomOAuth2UserService oAuth2UserService;
@@ -106,7 +105,6 @@ public class SecurityConfig {
 		// Get AuthenticationManager
 		AuthenticationManager authenticationManager = authenticationManagerBuilder.build();
 		http.authenticationManager(authenticationManager)
-				.addFilter(corsConfig.corsFilter())
 				.addFilterAt(
 						new JwtAuthenticationFilter(authenticationManager, jwtTokenProvider, refreshTokenRepository),
 						UsernamePasswordAuthenticationFilter.class)
