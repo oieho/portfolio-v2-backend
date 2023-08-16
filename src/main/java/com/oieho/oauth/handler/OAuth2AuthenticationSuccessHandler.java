@@ -110,7 +110,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         }
 
 
-		response.addHeader(SecurityConstants.TOKEN_HEADER, SecurityConstants.TOKEN_PREFIX + accessToken);
+        response.addHeader("Set-Cookie", SecurityConstants.TOKEN_HEADER+"="+SecurityConstants.TOKEN_PREFIX + accessToken+"   Secure;  SameSite=None");
 		response.addHeader(SecurityConstants.REFRESH_HEADER, SecurityConstants.REFRESH_PREFIX + refreshToken);
         return UriComponentsBuilder.fromUriString(targetUrl)
                 .queryParam("accessToken",accessToken)
