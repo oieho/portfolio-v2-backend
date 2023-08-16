@@ -22,7 +22,7 @@ public class BackendApplication {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**").allowedOriginPatterns("*").allowedMethods("*").allowedHeaders("*").exposedHeaders("*").maxAge(3600).allowCredentials(true);
+                registry.addMapping("/**").allowedOrigins("https://oieho.netlify.app").allowedMethods("*").allowedHeaders("*").exposedHeaders("*").maxAge(3600).allowCredentials(true);
             }
         };
     }
