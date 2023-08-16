@@ -1,7 +1,5 @@
 package com.oieho.config;
 
-import java.util.Arrays;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,9 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsUtils;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.oieho.entity.RoleType;
 import com.oieho.jwt.JwtTokenProvider;
@@ -40,7 +36,6 @@ public class SecurityConfig {
 	private final MemberRepository memberRepository;
 	private final AppProperties appProperties;
 	private final JwtTokenProvider jwtTokenProvider;
-	private final CorsConfig corsConfig;
 	private final RefreshTokenRepository refreshTokenRepository;
 	private final CustomUserDetailsService cusUserDetailsService;
 	private final CustomOAuth2UserService oAuth2UserService;
@@ -67,8 +62,6 @@ public class SecurityConfig {
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
 		http
-        .cors()
-    .and()
         .sessionManagement()
         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
     .and()
@@ -106,7 +99,6 @@ public class SecurityConfig {
 		// Get AuthenticationManager
 		AuthenticationManager authenticationManager = authenticationManagerBuilder.build();
 		http.authenticationManager(authenticationManager)
-				.addFilter(corsConfig.corsFilter())
 				.addFilterAt(
 						new JwtAuthenticationFilter(authenticationManager, jwtTokenProvider, refreshTokenRepository),
 						UsernamePasswordAuthenticationFilter.class)
