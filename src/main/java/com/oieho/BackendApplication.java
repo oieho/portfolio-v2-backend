@@ -12,6 +12,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableJpaAuditing
 @SpringBootApplication
 public class BackendApplication {
+
 	public static void main(String[] args) {
 		SpringApplication.run(BackendApplication.class, args);
 	}
@@ -21,8 +22,9 @@ public class BackendApplication {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**").allowedOrigins("https://oieho.netlify.app").allowedMethods("*").allowedHeaders("*").exposedHeaders("*").maxAge(3600).allowCredentials(true);
+                registry.addMapping("/**").allowedOrigins("*").allowedMethods("*").allowedHeaders("*").maxAge(3600).allowCredentials(true);
             }
         };
     }
+    
 }
