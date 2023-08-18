@@ -89,7 +89,7 @@ jwt:
   refreshExpire: 6000000
   
 cors:
-  allowed-origins: 'https://oieho.netlify.app'
+  allowed-origins: 'https://nginx-nginx-3prof2lll3bfr1i.sel3.cloudtype.app'
   allowed-methods: GET,POST,PUT,DELETE,OPTIONS
   allowed-headers: '*'
   max-age: 3600
@@ -97,7 +97,7 @@ cors:
 app:
   oauth2:
     authorizedRedirectUris:
-      - https://web-portfolio-v2-frontend-3prof2lll3bfr1i.sel3.cloudtype.app/oauth/redirect
+      - https://nginx-nginx-3prof2lll3bfr1i.sel3.cloudtype.app/oauth/redirect
       
 logging:
   level:
