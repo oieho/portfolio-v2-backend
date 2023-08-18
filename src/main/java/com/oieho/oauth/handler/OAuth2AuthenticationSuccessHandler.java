@@ -112,7 +112,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 		response.addHeader(SecurityConstants.TOKEN_HEADER, SecurityConstants.TOKEN_PREFIX + accessToken);
 		response.addHeader(SecurityConstants.REFRESH_HEADER, SecurityConstants.REFRESH_PREFIX + refreshToken);
         return UriComponentsBuilder.fromUriString(targetUrl)
-        		.fragment("/socialLogin")
+        		.fragment("/#/socialLogin")
                 .queryParam("accessToken",accessToken)
                 .queryParam("refreshToken",refreshToken)
                 .build().toUriString();
