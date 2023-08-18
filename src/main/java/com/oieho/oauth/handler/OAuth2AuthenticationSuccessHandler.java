@@ -70,7 +70,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             throw new IllegalArgumentException("승인되지 않은 리디렉션 URI가 있어 인증을 진행할 수 없습니다.");
         }
 
-        String targetUrl = redirectUri.orElse(getDefaultTargetUrl()) + "/#/";
+        String targetUrl = redirectUri.orElse(getDefaultTargetUrl()) + "/#/socialLogin";
 
         OAuth2AuthenticationToken authToken = (OAuth2AuthenticationToken) authentication;
         ProviderType providerType = ProviderType.valueOf(authToken.getAuthorizedClientRegistrationId().toUpperCase());
