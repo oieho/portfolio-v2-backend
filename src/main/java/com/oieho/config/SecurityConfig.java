@@ -109,7 +109,7 @@ public class SecurityConfig {
         .userService(oAuth2UserService)
     .and()
         .successHandler(oAuth2AuthenticationSuccessHandler())
-        .failureHandler(oAuth2AuthenticationFailureHandler());
+        .failureHandler(oAuth2AuthenticationFailureHandler()).permitAll();
 
 		// AuthenticationManager설정
 		AuthenticationManagerBuilder authenticationManagerBuilder = http
