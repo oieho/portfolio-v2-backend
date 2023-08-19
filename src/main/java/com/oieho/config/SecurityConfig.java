@@ -76,9 +76,9 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", configuration);
         return source;
 	}
+	
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-
 		http
         .cors().and()
         .sessionManagement()
@@ -109,7 +109,7 @@ public class SecurityConfig {
         .userService(oAuth2UserService)
     .and()
         .successHandler(oAuth2AuthenticationSuccessHandler())
-        .failureHandler(oAuth2AuthenticationFailureHandler()).permitAll();
+        .failureHandler(oAuth2AuthenticationFailureHandler());
 
 		// AuthenticationManager설정
 		AuthenticationManagerBuilder authenticationManagerBuilder = http
