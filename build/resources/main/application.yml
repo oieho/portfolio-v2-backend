@@ -51,7 +51,7 @@ spring:
         kakao:
           clientId: bbc87c6fde6c87b2e6c0e5df504355e6
           clientSecret: Yf4RE6oGYvhCBrMqMiS69HesIHtzsfwn
-          clientAuthenticationMethod: get
+          clientAuthenticationMethod: post
           authorizationGrantType: authorization_code
           redirectUri: "{baseUrl}/{action}/oauth2/code/{registrationId}"
           scope:
