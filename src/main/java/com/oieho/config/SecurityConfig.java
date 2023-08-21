@@ -69,7 +69,7 @@ public class SecurityConfig {
 
         configuration.addAllowedOrigin("https://oieho.xyz");
         configuration.addAllowedHeader("*");
-        configuration.addAllowedMethod("GET,POST,PUT,DELETE,OPTIONS");
+        configuration.addAllowedMethod("*");
         configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
