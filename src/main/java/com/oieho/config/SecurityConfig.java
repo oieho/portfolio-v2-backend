@@ -84,7 +84,7 @@ public class SecurityConfig {
         .sessionManagement()
         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
     .and()
-
+        .csrf().disable()
         .formLogin().disable()
         .httpBasic().disable()
         .exceptionHandling()
