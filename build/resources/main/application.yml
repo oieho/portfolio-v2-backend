@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8088
 
 spring:
   servlet:
@@ -14,10 +14,10 @@ spring:
       max-file-size: 10MB
 
   datasource:
-    driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://svc.sel3.cloudtype.app:31795/oieho
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://root:9tSD2pCHWcBijdz4HxBE@containers-us-west-34.railway.app:6102/railway
     username: root
-    password: ${MPW}
+    password: root
       
   jpa:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
@@ -83,11 +83,11 @@ spring:
           starttls:
             enable: true
 jwt:
-  secret: ${JSECRET}
-  authToken: ${JSECRET}
+  secret: 236979CB6F1AD6B6A6184A31E6BE37DB3818CC36871E26235DD67DCFE4041492
+  authToken: 236979CB6F1AD6B6A6184A31E6BE37DB3818CC36871E26235DD67DCFE4041492
   accessExpire: 30000000
   refreshExpire: 6000000
-  
+   
 cors:
   allowed-origins: 'https://oieho.xyz'
   allowed-methods: GET,POST,PUT,DELETE,OPTIONS
