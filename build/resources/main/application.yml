@@ -17,7 +17,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://root:9tSD2pCHWcBijdz4HxBE@containers-us-west-34.railway.app:6102/railway
     username: root
-    password: root
+    password: ${MPW}
       
   jpa:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
@@ -83,8 +83,8 @@ spring:
           starttls:
             enable: true
 jwt:
-  secret: 236979CB6F1AD6B6A6184A31E6BE37DB3818CC36871E26235DD67DCFE4041492
-  authToken: 236979CB6F1AD6B6A6184A31E6BE37DB3818CC36871E26235DD67DCFE4041492
+  secret: ${JSECRET}
+  authToken: ${JSECRET}
   accessExpire: 30000000
   refreshExpire: 6000000
    
