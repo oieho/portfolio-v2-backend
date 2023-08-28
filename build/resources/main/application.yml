@@ -89,7 +89,7 @@ jwt:
   refreshExpire: 6000000
    
 cors:
-  allowed-origins: 'https://oieho.xyz'
+  allowed-origins: 'https://oieho.netlify.app'
   allowed-methods: GET,POST,PUT,DELETE,OPTIONS
   allowed-headers: '*'
   max-age: 3600
@@ -97,7 +97,7 @@ cors:
 app:
   oauth2:
     authorizedRedirectUris:
-      - https://oieho.xyz/oauth/redirect
+      - https://oieho.netlify.app/oauth/redirect
       
 logging:
   level:
