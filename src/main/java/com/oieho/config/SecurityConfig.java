@@ -64,7 +64,7 @@ public class SecurityConfig {
 	public OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler() {
 		return new OAuth2AuthenticationFailureHandler(oAuth2AuthorizationRequestBasedOnCookieRepository);
 	}
-	@Order(Ordered.HIGHEST_PRECEDENCE)
+	
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
