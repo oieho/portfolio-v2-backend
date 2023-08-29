@@ -71,7 +71,7 @@ public class SecurityConfig {
 
         configuration.addAllowedOrigin("https://portfolio-v2-frontend-production.up.railway.app:3000");
         configuration.addAllowedHeader("*");
-        configuration.addAllowedMethod("GET, POST, PUT, DELETE, OPTIONS");
+        configuration.addAllowedMethod("*");
         configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
