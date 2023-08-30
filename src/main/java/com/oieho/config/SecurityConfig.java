@@ -49,7 +49,7 @@ public class SecurityConfig {
 	private final TokenAccessDeniedHandler tokenAccessDeniedHandler;
 	private final OAuth2AuthorizationRequestBasedOnCookieRepository oAuth2AuthorizationRequestBasedOnCookieRepository;
 
-	@Bean
+	@Bean 
 	static PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
