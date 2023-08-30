@@ -69,7 +69,7 @@ public class SecurityConfig {
 	public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.addAllowedOrigin("portfolio-v2-frontend:80");
+        configuration.addAllowedOrigin("https://web-portfolio-v2-frontend-3prof2lll3bfr1i.sel3.cloudtype.app");
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
         configuration.setAllowCredentials(true);
@@ -82,7 +82,7 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http
-        .cors().and().csrf().disable().headers().frameOptions().disable().and()
+        .cors().and().csrf().disable()
         .sessionManagement()
         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
     .and()
