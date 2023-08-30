@@ -69,7 +69,7 @@ public class SecurityConfig {
 	public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.addAllowedOrigin("http://web-portfolio-v2-frontend-3prof2lll3bfr1i.sel3.cloudtype.app");
+        configuration.addAllowedOrigin("*");
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
         configuration.setAllowCredentials(true);
@@ -100,7 +100,7 @@ public class SecurityConfig {
     .and()
         .oauth2Login()
         .authorizationEndpoint()
-        .baseUri("/oauth2/authorize")
+        .baseUri("/oauth2/authorization")
         .authorizationRequestRepository(oAuth2AuthorizationRequestBasedOnCookieRepository)
     .and()
         .redirectionEndpoint()
