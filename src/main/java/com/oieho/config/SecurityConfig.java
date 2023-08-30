@@ -65,10 +65,34 @@ public class SecurityConfig {
 		return new OAuth2AuthenticationFailureHandler(oAuth2AuthorizationRequestBasedOnCookieRepository);
 	}
 	
+	@Bean
+	public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
 
+        configuration.addAllowedOrigin("portfolio-v2-frontend:80");
+        configuration.addAllowedHeader("*");
+        configuration.addAllowedMethod("*");
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+	}
 	
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+		// AuthenticationManager설정
+		AuthenticationManagerBuilder authenticationManagerBuilder = http
+				.getSharedObject(AuthenticationManagerBuilder.class);
+		authenticationManagerBuilder.userDetailsService(cusUserDetailsService).passwordEncoder(passwordEncoder());
+		// Get AuthenticationManager
+		AuthenticationManager authenticationManager = authenticationManagerBuilder.build();
+		http.authenticationManager(authenticationManager)
+				.addFilterAt(
+						new JwtAuthenticationFilter(authenticationManager, jwtTokenProvider, refreshTokenRepository),
+						UsernamePasswordAuthenticationFilter.class)
+				.addFilterBefore(new JwtRequestFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
+		
 		http
         .cors().and().csrf().disable()
         .sessionManagement()
@@ -100,17 +124,7 @@ public class SecurityConfig {
         .successHandler(oAuth2AuthenticationSuccessHandler())
         .failureHandler(oAuth2AuthenticationFailureHandler());
 
-		// AuthenticationManager설정
-		AuthenticationManagerBuilder authenticationManagerBuilder = http
-				.getSharedObject(AuthenticationManagerBuilder.class);
-		authenticationManagerBuilder.userDetailsService(cusUserDetailsService).passwordEncoder(passwordEncoder());
-		// Get AuthenticationManager
-		AuthenticationManager authenticationManager = authenticationManagerBuilder.build();
-		http.authenticationManager(authenticationManager)
-				.addFilterAt(
-						new JwtAuthenticationFilter(authenticationManager, jwtTokenProvider, refreshTokenRepository),
-						UsernamePasswordAuthenticationFilter.class)
-				.addFilterBefore(new JwtRequestFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
+
 		return http.build();
 	}
 
