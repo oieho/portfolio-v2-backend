@@ -82,7 +82,7 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http
-        .cors().and().csrf().disable()
+        .cors().and().csrf().disable().headers().frameOptions().disable().and()
         .sessionManagement()
         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
     .and()
@@ -95,7 +95,7 @@ public class SecurityConfig {
         .authorizeRequests()
         .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
         .antMatchers("*").hasAnyAuthority(RoleType.USER.getCode())
-        .antMatchers("/api/**/admin/**").hasAnyAuthority(RoleType.ADMIN.getCode()).anyRequest().authenticated()
+        .antMatchers("/api/**/admin/**").hasAnyAuthority(RoleType.ADMIN.getCode())
 
     .and()
         .oauth2Login()
