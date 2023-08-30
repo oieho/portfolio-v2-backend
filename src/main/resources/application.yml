@@ -91,7 +91,7 @@ jwt:
 app:
   oauth2:
     authorizedRedirectUris:
-      - https://oieho.xyz/oauth/redirect
+      - https://portfolio-v2-frontend:80/oauth/redirect
       
 logging:
   level:
