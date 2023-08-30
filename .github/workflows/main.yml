@@ -2,7 +2,7 @@ name: Deploy to cloudtype
 on:
   push:
     branches:
-      - main
+      - master
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -26,14 +26,14 @@ jobs:
             app: java@11
 
             options:
-              ports: "8080"
+              ports: "8088"
               jarfile: build/libs/backend-1-0.0.1-SNAPSHOT.jar
+              includes: /static
               env:
                 - name: MPW
                   value: RooT3%3
                 - name: JSECRET
                   value: 236979CB6F1AD6B6A6184A31E6BE37DB3818CC36871E26235DD67DCFE4041492
-              includes: /static
             context:
               git:
                 url: git@github.com:${{ github.repository }}.git
