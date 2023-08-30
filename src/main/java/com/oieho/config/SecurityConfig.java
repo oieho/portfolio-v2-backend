@@ -49,7 +49,7 @@ public class SecurityConfig {
 	private final TokenAccessDeniedHandler tokenAccessDeniedHandler;
 	private final OAuth2AuthorizationRequestBasedOnCookieRepository oAuth2AuthorizationRequestBasedOnCookieRepository;
 
-	@Bean 
+	@Bean
 	static PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
@@ -69,7 +69,7 @@ public class SecurityConfig {
 	public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.addAllowedOrigin("portfolio-v2-frontend:80");
+        configuration.addAllowedOrigin("*");
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
         configuration.setAllowCredentials(true);
