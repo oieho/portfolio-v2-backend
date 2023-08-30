@@ -81,18 +81,6 @@ public class SecurityConfig {
 	
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		// AuthenticationManager설정
-		AuthenticationManagerBuilder authenticationManagerBuilder = http
-				.getSharedObject(AuthenticationManagerBuilder.class);
-		authenticationManagerBuilder.userDetailsService(cusUserDetailsService).passwordEncoder(passwordEncoder());
-		// Get AuthenticationManager
-		AuthenticationManager authenticationManager = authenticationManagerBuilder.build();
-		http.authenticationManager(authenticationManager)
-				.addFilterAt(
-						new JwtAuthenticationFilter(authenticationManager, jwtTokenProvider, refreshTokenRepository),
-						UsernamePasswordAuthenticationFilter.class)
-				.addFilterBefore(new JwtRequestFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
-		
 		http
         .cors().and().csrf().disable()
         .sessionManagement()
@@ -107,7 +95,7 @@ public class SecurityConfig {
         .authorizeRequests()
         .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
         .antMatchers("*").hasAnyAuthority(RoleType.USER.getCode())
-        .antMatchers("/api/**/admin/**").hasAnyAuthority(RoleType.ADMIN.getCode())
+        .antMatchers("/api/**/admin/**").hasAnyAuthority(RoleType.ADMIN.getCode()).anyRequest().authenticated()
 
     .and()
         .oauth2Login()
@@ -124,7 +112,17 @@ public class SecurityConfig {
         .successHandler(oAuth2AuthenticationSuccessHandler())
         .failureHandler(oAuth2AuthenticationFailureHandler());
 
-
+		// AuthenticationManager설정
+		AuthenticationManagerBuilder authenticationManagerBuilder = http
+				.getSharedObject(AuthenticationManagerBuilder.class);
+		authenticationManagerBuilder.userDetailsService(cusUserDetailsService).passwordEncoder(passwordEncoder());
+		// Get AuthenticationManager
+		AuthenticationManager authenticationManager = authenticationManagerBuilder.build();
+		http.authenticationManager(authenticationManager)
+				.addFilterAt(
+						new JwtAuthenticationFilter(authenticationManager, jwtTokenProvider, refreshTokenRepository),
+						UsernamePasswordAuthenticationFilter.class)
+				.addFilterBefore(new JwtRequestFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
 		return http.build();
 	}
 
