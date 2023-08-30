@@ -100,7 +100,7 @@ public class SecurityConfig {
     .and()
         .oauth2Login()
         .authorizationEndpoint()
-        .baseUri("/oauth2/authorization/*")
+        .baseUri("/oauth2/authorize")
         .authorizationRequestRepository(oAuth2AuthorizationRequestBasedOnCookieRepository)
     .and()
         .redirectionEndpoint()
