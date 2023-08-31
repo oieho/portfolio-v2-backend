@@ -91,7 +91,7 @@ jwt:
 app:
   oauth2:
     authorizedRedirectUris:
-      - https://nginx-nginx-3prof2lll3bfr1i.sel3.cloudtype.app/oauth/redirect
+      - https://web-portfolio-v2-frontend-3prof2lll3bfr1i.sel3.cloudtype.app/oauth/redirect
       
 logging:
   level:
