@@ -17,7 +17,7 @@ spring:
     driver-class-name: org.mariadb.jdbc.Driver
     url: jdbc:mariadb://svc.sel3.cloudtype.app:31795/oieho
     username: root
-    password: ${MPW}
+    password: RooT3%3
       
   jpa:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
@@ -53,7 +53,7 @@ spring:
           clientSecret: Yf4RE6oGYvhCBrMqMiS69HesIHtzsfwn
           clientAuthenticationMethod: post
           authorizationGrantType: authorization_code
-          redirectUri: "https://port-0-portfolio-v2-backend-3prof2lll3bfr1i.sel3.cloudtype.app/oauth2/code/{registrationId}"
+          redirectUri: "{baseUrl}/{action}/oauth2/code/{registrationId}"
           scope:
             - profile_nickname
             - account_email
@@ -83,8 +83,8 @@ spring:
           starttls:
             enable: true
 jwt:
-  secret: ${JSECRET}
-  authToken: ${JSECRET}
+  secret: 236979CB6F1AD6B6A6184A31E6BE37DB3818CC36871E26235DD67DCFE4041492
+  authToken: 236979CB6F1AD6B6A6184A31E6BE37DB3818CC36871E26235DD67DCFE4041492
   accessExpire: 30000000
   refreshExpire: 6000000
    
