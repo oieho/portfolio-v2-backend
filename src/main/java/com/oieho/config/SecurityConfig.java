@@ -69,7 +69,7 @@ public class SecurityConfig {
 	public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.addAllowedOrigin("https://oieho.netlify.app");
+        configuration.addAllowedOrigin("http://localhost:3000/");
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
         configuration.setAllowCredentials(true);
@@ -104,7 +104,7 @@ public class SecurityConfig {
         .authorizationRequestRepository(oAuth2AuthorizationRequestBasedOnCookieRepository)
     .and()
         .redirectionEndpoint()
-        .baseUri("/oauth2/callback/*")
+        .baseUri("/*/oauth2/code/*")
     .and()
         .userInfoEndpoint()
         .userService(oAuth2UserService)
