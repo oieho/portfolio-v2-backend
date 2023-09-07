@@ -17,7 +17,7 @@ spring:
     driver-class-name: org.mariadb.jdbc.Driver
     url: jdbc:mariadb://svc.sel3.cloudtype.app:31795/oieho
     username: root
-    password: RooT3%3
+    password: ${DBPW}
       
   jpa:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
@@ -83,8 +83,8 @@ spring:
           starttls:
             enable: true
 jwt:
-  secret: 236979CB6F1AD6B6A6184A31E6BE37DB3818CC36871E26235DD67DCFE4041492
-  authToken: 236979CB6F1AD6B6A6184A31E6BE37DB3818CC36871E26235DD67DCFE4041492
+  secret: ${TOKENSECRET}
+  authToken: ${TOKENSECRET}
   accessExpire: 30000000
   refreshExpire: 6000000
    
