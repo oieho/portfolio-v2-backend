@@ -91,7 +91,7 @@ jwt:
 app:
   oauth2:
     authorizedRedirectUris:
-      - http://host.docker.internal:3000/oauth/redirect
+      - http://127.0.0.1:3000/oauth/redirect
       
 logging:
   level:
