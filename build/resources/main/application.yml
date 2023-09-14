@@ -2,8 +2,6 @@ server:
   port: 8088
 
 spring:
-  mvc:
-    static-path-pattern: /resources/**
   web:
     resources:
       static-locations: classpath:/resources/**
