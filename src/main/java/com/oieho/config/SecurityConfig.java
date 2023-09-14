@@ -94,6 +94,7 @@ public class SecurityConfig {
     .and()
         .authorizeRequests()
         .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
+        .antMatchers("/static/**").permitAll() // 이부분
         .antMatchers("*").hasAnyAuthority(RoleType.USER.getCode())
         .antMatchers("/api/**/admin/**").hasAnyAuthority(RoleType.ADMIN.getCode())
 
