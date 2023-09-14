@@ -14,10 +14,10 @@ spring:
       max-file-size: 10MB
 
   datasource:
-    driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://root:9uhub3RzXTudqpfBO2kw@containers-us-west-132.railway.app:6455/railway
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://54.180.58.152:3306/my_database
     username: root
-    password: 9uhub3RzXTudqpfBO2kw
+    password: dlxodns123
       
   jpa:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
