@@ -16,7 +16,7 @@ spring:
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
     url: jdbc:mariadb://54.180.58.152:3306/my_database
-    username: newRoot
+    username: root
     password: dlxodns123
       
   jpa:
