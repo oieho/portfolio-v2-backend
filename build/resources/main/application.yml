@@ -2,9 +2,6 @@ server:
   port: 8088
 
 spring:
-  web:
-    resources:
-      static-locations: classpath:/static/**
   servlet:
     multipart:
       enabled: true
@@ -97,4 +94,4 @@ logging:
     root: info
     
 upload:
-  path: static/boardImgs
+  path: static\boardImgs
