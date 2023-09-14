@@ -201,7 +201,7 @@ public class UploadController {
 	        String path = image.getPath(); // 이미지 파일이 저장된 경로
 	        String uuid = image.getUuid(); // 이미지 파일의 UUID
 	        String imgName = image.getImgName(); // 이미지 파일의 이름
-	        File file = new File(path + "\\" + "s_" + uuid + "_" + imgName); // 파일 객체 생성
+	        File file = new File(path + "//" + "s_" + uuid + "_" + imgName); // 파일 객체 생성
 	        HttpHeaders header = new HttpHeaders();
 
 	        // MIME 타입 처리
