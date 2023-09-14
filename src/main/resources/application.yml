@@ -3,10 +3,6 @@ server:
 
 spring:
   servlet:
-    session:
-      cookie:
-        same-site: none
-        secure: true
     multipart:
       enabled: true
       location: C:\\upload
