@@ -80,7 +80,7 @@ public class UploadController {
 				uploadFile.transferTo(savePath);
 
 				// 응답에 필요한 정보 추가
-				String rootStr = "/static/" + "boardImgs";
+				String rootStr = "static/" + "boardImgs";
 				Map<String, Object> fileData = new HashMap<>();
 				fileData.put("url", rootStr + "/" + folderPath + "/" + uuid + "_" + originalName);
 				fileData.put("name", originalName);
@@ -136,7 +136,7 @@ public class UploadController {
 				break;
 			}
 			
-			String rootStr = "/static/" + "boardImgs";
+			String rootStr = "static/" + "boardImgs";
 			fileData.put("url", rootStr + "/" + folderPath + "/" + uuid + "_" + originalName);
 			fileData.put("name", originalName);
 			fileData.put("size", uploadFile.getSize());
