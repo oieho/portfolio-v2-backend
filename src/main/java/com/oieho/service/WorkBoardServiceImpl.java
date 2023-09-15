@@ -449,7 +449,7 @@ public class WorkBoardServiceImpl implements WorkBoardService {
 			String imgName = imgInfo.getImgName();
 			String uuid = imgInfo.getUuid();
 			String path = imgInfo.getPath();
-			String thumbnailSaveName = path + File.separator + "s_" + uuid + "_" + imgName;
+			String thumbnailSaveName = path + "/" + "s_" + uuid + "_" + imgName;
 
 			BufferedImage originalImage = ImageIO.read(uploadFile.getInputStream());
 			BufferedImage thumbnailImage = Thumbnailator.createThumbnail(originalImage, 100, 100);
@@ -460,13 +460,13 @@ public class WorkBoardServiceImpl implements WorkBoardService {
 
 	public String makeFolder(Boolean thumbnailyn) {
 		String str = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
-		String folderPath = str.replace("/", File.separator);
+		String folderPath = str.replace("/", "/");
 		// make folder------------
 		String fullPath = null;
 		if (thumbnailyn == true) {
-			fullPath = uploadPath + File.separator + folderPath + File.separator + "thumbnails";
+			fullPath = uploadPath + "/" + folderPath + "/" + "thumbnails";
 		} else {
-			fullPath = uploadPath + File.separator + folderPath;
+			fullPath = uploadPath + "/" + folderPath;
 		}
 		File uploadPathFolder = new File(fullPath);
 

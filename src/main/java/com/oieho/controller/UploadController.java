@@ -73,16 +73,16 @@ public class UploadController {
 	        String uuid = UUID.randomUUID().toString();
 
 			// 저장할 파일 이름 중간에 "_"를 이용해서 구분
-			String saveName = uploadPath + File.separator + folderPath + File.separator + uuid + "_" + originalName;
+			String saveName = uploadPath + "/" + folderPath + "/" + uuid + "_" + originalName;
 			Path savePath = Paths.get(saveName);
 
 			try {
 				uploadFile.transferTo(savePath);
 
 				// 응답에 필요한 정보 추가
-				String rootStr = File.separator + "boardImgs";
+				String rootStr = "/" + "boardImgs";
 				Map<String, Object> fileData = new HashMap<>();
-				fileData.put("url", rootStr + File.separator + folderPath + File.separator + uuid + "_" + originalName);
+				fileData.put("url", rootStr + "/" + folderPath + "/" + uuid + "_" + originalName);
 				fileData.put("name", originalName);
 				fileData.put("size", uploadFile.getSize());
 				System.out.println(fileData.get("url"));
@@ -126,7 +126,7 @@ public class UploadController {
 	        String uuid = UUID.randomUUID().toString();
 	        		
 	        
-			String saveName = uploadPath + File.separator + folderPath + File.separator + uuid + "_" + originalName;
+			String saveName = uploadPath + "/" + folderPath + "/" + uuid + "_" + originalName;
 			Path savePath = Paths.get(saveName);
 
 			try {
@@ -136,11 +136,11 @@ public class UploadController {
 				break;
 			}
 			
-			String rootStr = File.separator + "boardImgs";
-			fileData.put("url", rootStr + File.separator + folderPath + File.separator + uuid + "_" + originalName);
+			String rootStr = "/" + "boardImgs";
+			fileData.put("url", rootStr + "/" + folderPath + "/" + uuid + "_" + originalName);
 			fileData.put("name", originalName);
 			fileData.put("size", uploadFile.getSize());
-			fileData.put("path", rootStr + File.separator + folderPath);
+			fileData.put("path", rootStr + "/" + folderPath);
 			fileData.put("uuid", uuid);
 
 		}
@@ -184,8 +184,8 @@ public class UploadController {
 		String uuid = UUID.randomUUID().toString();
 
 		// 썸네일 이미지 저장 경로
-		String thumbnailSaveName = uploadPath + File.separator + folderPath + File.separator + "thumbnails"
-				+ File.separator + "s_" + uuid + "_" + fileName;
+		String thumbnailSaveName = uploadPath + "/" + folderPath + "/" + "thumbnails"
+				+ "/" + "s_" + uuid + "_" + fileName;
 
 		return new ResponseEntity<String>(thumbnailSaveName, HttpStatus.OK);
 	}
@@ -201,7 +201,7 @@ public class UploadController {
 	        String path = image.getPath(); // 이미지 파일이 저장된 경로
 	        String uuid = image.getUuid(); // 이미지 파일의 UUID
 	        String imgName = image.getImgName(); // 이미지 파일의 이름
-	        File file = new File(path + File.separator + "s_" + uuid + "_" + imgName); // 파일 객체 생성
+	        File file = new File(path + "/" + "s_" + uuid + "_" + imgName); // 파일 객체 생성
 	        HttpHeaders header = new HttpHeaders();
 
 	        // MIME 타입 처리

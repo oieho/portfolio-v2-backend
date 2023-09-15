@@ -94,4 +94,4 @@ logging:
     root: info
     
 upload:
-  path: static\boardImgs
+  path: static/boardImgs
