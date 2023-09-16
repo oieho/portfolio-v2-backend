@@ -42,66 +42,6 @@ public class UploadController {
 
 	@Value("${upload.path}") // application.properties의 변수
 	private String uploadPath;
-	
-	@PostMapping("/imageUpload")
-	public ResponseEntity<Map<String, Object>> uploadImg(@RequestParam Map<String, MultipartFile> fileMap) {
-	    List<Map<String, Object>> resultList = new ArrayList<>();
-	    String errorMessage = null;
-        Long maxWno = boardService.getCountWno();
-        if (maxWno == null) {
-        	maxWno = 1L;
-        }
-        
-	    for (Map.Entry<String, MultipartFile> entry : fileMap.entrySet()) {
-	        String fieldName = entry.getKey();
-	        MultipartFile uploadFile = entry.getValue();
-
-	        // 이미지 파일만 업로드 가능
-	        if (!uploadFile.getContentType().startsWith("image")) {
-	            log.warn("This file is not an image type: " + fieldName);
-	            errorMessage = "Invalid file type";
-	            break;
-	        }
-
-	        // 실제 파일 이름 (IE나 Edge는 전체 경로가 들어올 수 있으므로 파일명만 추출)
-	        String originalName = uploadFile.getOriginalFilename();
-	        // 날짜 폴더 생성
-	        Boolean thumbnailyn = false;
-	        String folderPath = boardService.makeFolder(thumbnailyn);
-
-	        // UUID
-	        String uuid = UUID.randomUUID().toString();
-
-			// 저장할 파일 이름 중간에 "_"를 이용해서 구분
-			String saveName = uploadPath + "/" + folderPath + "/" + uuid + "_" + originalName;
-			Path savePath = Paths.get(saveName);
-
-			try {
-				uploadFile.transferTo(savePath);
-
-				// 응답에 필요한 정보 추가
-				String rootStr = "static/" + "boardImgs";
-				Map<String, Object> fileData = new HashMap<>();
-				fileData.put("url", rootStr + "/" + folderPath + "/" + uuid + "_" + originalName);
-				fileData.put("name", originalName);
-				fileData.put("size", uploadFile.getSize());
-				System.out.println(fileData.get("url"));
-				resultList.add(fileData);
-			} catch (IOException e) {
-				e.printStackTrace();
-				// 업로드 실패 시 예외 처리
-				errorMessage = "Internal server error";
-				break;
-			}
-		}
-
-		Map<String, Object> response = new HashMap<>();
-		response.put("errorMessage", errorMessage);
-		response.put("result", resultList);
-
-		HttpStatus status = (errorMessage != null) ? HttpStatus.INTERNAL_SERVER_ERROR : HttpStatus.OK;
-		return new ResponseEntity<>(response, status);
-	}
 
 	@PostMapping("/gettingUrlOnPortfolioImg")
 	public ResponseEntity<Map<String, Object>> gettingUrlOnPortfolioImg(
@@ -116,9 +56,6 @@ public class UploadController {
 
 			// 실제 파일 이름 IE나 Edge는 전체 경로가 들어오므로
 			String originalName = uploadFile.getOriginalFilename();
-			String fileName = originalName.substring(originalName.lastIndexOf("\\") + 1);
-
-			log.info("fileName: " + fileName);
 
 			// 날짜 폴더 생성
 	        Boolean thumbnailyn = false;
