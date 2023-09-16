@@ -136,7 +136,7 @@ public class UploadController {
 				break;
 			}
 			
-			String rootStr = File.separator + "boardImgs";
+			String rootStr = "static" + File.separator + "boardImgs";
 			fileData.put("url", rootStr + File.separator + folderPath + File.separator + uuid + "_" + originalName);
 			fileData.put("name", originalName);
 			fileData.put("size", uploadFile.getSize());
