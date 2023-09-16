@@ -472,15 +472,15 @@ public class WorkBoardServiceImpl implements WorkBoardService {
 		
 		if (uploadPathFolder.exists() == false) {
 			uploadPathFolder.mkdirs();
+			// 폴더 권한 변경 (drwxrwxrwx)
+			if (uploadPathFolder.setExecutable(true, false) && uploadPathFolder.setReadable(true, false)
+					&& uploadPathFolder.setWritable(true, false)) {
+				System.out.println("폴더의 권한이 변경되었습니다.");
+			} else {
+				System.err.println("폴더 권한 변경에 실패했습니다.");
+			}
 		}
 
-		// 폴더 권한 변경 (drwxrwxrwx)
-		if (uploadPathFolder.setExecutable(true, false) && uploadPathFolder.setReadable(true, false)
-				&& uploadPathFolder.setWritable(true, false)) {
-			System.out.println("폴더의 권한이 변경되었습니다.");
-		} else {
-			System.err.println("폴더 권한 변경에 실패했습니다.");
-		}
 		return folderPath;
 	}
 
