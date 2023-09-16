@@ -74,7 +74,7 @@ public class UploadController {
 			}
 			
 			String rootStr = "/boardImgs";
-			fileData.put("url", "static" + rootStr + "/" + folderPath + "/" + uuid + "_" + originalName);
+			fileData.put("url", "http://ec2-54-180-58-152.ap-northeast-2.compute.amazonaws.com:8088/static" + rootStr + "/" + folderPath + "/" + uuid + "_" + originalName);
 			fileData.put("name", originalName);
 			fileData.put("size", uploadFile.getSize());
 			fileData.put("path", rootStr + "/" + folderPath);
