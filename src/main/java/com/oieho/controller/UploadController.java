@@ -73,16 +73,17 @@ public class UploadController {
 				break;
 			}
 			
-			String rootStr = "//boardImgs";
-			fileData.put("url", "static" + rootStr + "//" + folderPath + "//" + uuid + "_" + originalName);
+			String rootStr = "/boardImgs";
+			fileData.put("url", rootStr + "/" + folderPath + "/" + uuid + "_" + originalName);
 			fileData.put("name", originalName);
 			fileData.put("size", uploadFile.getSize());
-			fileData.put("path", rootStr + "//" + folderPath);
+			fileData.put("path", rootStr + "/" + folderPath);
 			fileData.put("uuid", uuid);
 
 		}
 		return new ResponseEntity<Map<String, Object>>(fileData, HttpStatus.OK);
 	}
+
 
 	@PostMapping("/generateThumbnailDir")
 	public ResponseEntity<?> generateThumbnailDir(@RequestParam(name = "thumbnailFile") MultipartFile thumbnailFile)
