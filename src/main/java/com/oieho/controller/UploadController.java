@@ -75,7 +75,7 @@ public class UploadController {
 			}
 			
 			String rootStr = "\boardImgs";
-			fileData.put("url", rootStr + File.separator + folderPath + File.separator + uuid + "_" + originalName);
+			fileData.put("url", rootStr + "/" + folderPath + "/" + uuid + "_" + originalName);
 			fileData.put("name", originalName);
 			fileData.put("size", uploadFile.getSize());
 			fileData.put("path", rootStr + "/" + folderPath);
