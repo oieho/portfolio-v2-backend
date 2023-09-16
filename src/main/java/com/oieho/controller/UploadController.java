@@ -67,14 +67,15 @@ public class UploadController {
 			Path savePath = Paths.get(saveName);
 
 			try {
-				uploadFile.transferTo(savePath);}
+				uploadFile.transferTo(savePath);
+				}
 			catch (IOException e) {
 				e.printStackTrace();
 				break;
 			}
 			
-			String rootStr = "/boardImgs";
-			fileData.put("url", rootStr + "/" + folderPath + "/" + uuid + "_" + originalName);
+			String rootStr = File.separator + "boardImgs";
+			fileData.put("url", rootStr + File.separator + folderPath + File.separator + uuid + File.separator + originalName);
 			fileData.put("name", originalName);
 			fileData.put("size", uploadFile.getSize());
 			fileData.put("path", rootStr + "/" + folderPath);
