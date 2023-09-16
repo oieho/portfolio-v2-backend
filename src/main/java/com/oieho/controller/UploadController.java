@@ -73,29 +73,15 @@ public class UploadController {
 				break;
 			}
 			
-			String rootStr = "/boardImgs";
-			fileData.put("url", "http://ec2-54-180-58-152.ap-northeast-2.compute.amazonaws.com:8088/static" + rootStr + "/" + folderPath + "/" + uuid + "_" + originalName);
+			String rootStr = "//boardImgs";
+			fileData.put("url", "static" + rootStr + "//" + folderPath + "//" + uuid + "_" + originalName);
 			fileData.put("name", originalName);
 			fileData.put("size", uploadFile.getSize());
-			fileData.put("path", rootStr + "/" + folderPath);
+			fileData.put("path", rootStr + "//" + folderPath);
 			fileData.put("uuid", uuid);
 
 		}
 		return new ResponseEntity<Map<String, Object>>(fileData, HttpStatus.OK);
-	}
-
-	// 함수로 세 자리 랜덤 영소 대문자와 숫자 생성
-	private String generateRandomString() {
-	    String characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-	    StringBuilder sb = new StringBuilder();
-	    Random random = new Random();
-
-	    for (int i = 0; i < 3; i++) {
-	        int index = random.nextInt(characters.length());
-	        sb.append(characters.charAt(index));
-	    }
-
-	    return sb.toString();
 	}
 
 	@PostMapping("/generateThumbnailDir")
