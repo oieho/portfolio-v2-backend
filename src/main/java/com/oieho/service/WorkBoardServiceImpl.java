@@ -533,22 +533,23 @@ public class WorkBoardServiceImpl implements WorkBoardService {
 		boardRepository.save(board);
 
 		if (boardImages != null && !boardImages.isEmpty()) {
-			for (WorkImage boardImage : boardImages) {
-				String boardImgName = boardImage.getImgName();
-				String boardImgUuid = boardImage.getUuid();
-				String boardImgPath = boardImage.getPath();
+		    for (WorkImage boardImage : boardImages) {
+		        String boardImgName = boardImage.getImgName();
+		        String boardImgUuid = boardImage.getUuid();
+		        String boardImgPath = boardImage.getPath();
 
-				WorkImage boardWorkImage = new WorkImage();
-				boardWorkImage.setImgName(boardImgName);
-				boardWorkImage.setUuid(boardImgUuid);
-				boardWorkImage.setPath(boardImgPath);
+		        WorkImage boardWorkImage = new WorkImage();
+		        boardWorkImage.setImgName(boardImgName);
+		        boardWorkImage.setUuid(boardImgUuid);
+		        boardWorkImage.setPath(boardImgPath);
 
-				boardWorkImage.setWorkBoard(board);
-				board.getWorkImages().add(boardWorkImage);
-			}
+		        boardWorkImage.setWorkBoard(board);
+		        board.getWorkImages().add(boardWorkImage);
+		    }
 
-			boardRepository.save(board);
+		    boardRepository.save(board);
 		}
+
 	}
 
 	@Override
