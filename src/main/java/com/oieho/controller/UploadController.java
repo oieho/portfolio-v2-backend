@@ -97,7 +97,7 @@ public class UploadController {
 		}
 		// 실제 파일 이름 (IE나 Edge는 전체 경로가 들어올 수 있으므로 파일명만 추출)
 		String originalName = thumbnailFile.getOriginalFilename();
-		String fileName = originalName.substring(originalName.lastIndexOf("\\") + 1);
+		String fileName = originalName.substring(originalName.lastIndexOf("/") + 1);
 
 		log.info("fileName: " + fileName);
 
