@@ -29,7 +29,7 @@ public interface WorkImageRepository extends JpaRepository<WorkImage, Long> {
     void deleteByImgName(@Param("fileName") String fileName);
 
 
-	@Query("SELECT CONCAT(img.path, '\\\\', img.uuid, '_', img.imgName), CONCAT(img.path, '/s_', img.uuid, '_', img.imgName) FROM WorkImage img WHERE img.workBoard.wno = :wno")
+	@Query("SELECT CONCAT(img.path, '/', img.uuid, '_', img.imgName), CONCAT(img.path, '/s_', img.uuid, '_', img.imgName) FROM WorkImage img WHERE img.workBoard.wno = :wno")
 	List<String[]> findPathAndUuidAndImgName(@Param("wno") Long wno);
 
 	@Transactional
