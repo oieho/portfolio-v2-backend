@@ -76,7 +76,7 @@ public class WorkRepositoryTests {
 							+ "  <figure> <a target=\"_blank\" href=\"http://www.woodpack.co.kr/\" data-image-link=\"image\"><img src=\"/boardImgs/portfolioImgs/5f491b18-5660-4114-9a83-ff8327956d22_woodpack.jpg\" alt=\"\" data-rotate=\"\" data-proportion=\"true\" data-align=\"center\" data-size=\",\" data-percentage=\"auto,auto\" data-file-name=\"woodpack.jpg\" data-file-size=\"697243\" data-origin=\",\" data-image-link=\"http://www.woodpack.co.kr/\" style=\"\"></a></figure></div>",
 					"<div class=\"se-component se-image-container __se__float-center\">\r\n" + "    <figure>\r\n"
 							+ "        <a target=\"_blank\" href=\"http://www.sesil.kr/\" data-image-link=\"image\">\r\n"
-							+ "            <img src=\"http://localhost:3000/boardImgs/portfolioImgs/b36e1ba6-2fc8-4e63-9413-e082cb962d0f_sesil.jpg\"\r\n"
+							+ "            <img src=\"/boardImgs/portfolioImgs/b36e1ba6-2fc8-4e63-9413-e082cb962d0f_sesil.jpg\"\r\n"
 							+ "                alt=\"\" data-rotate=\"\" data-proportion=\"true\" data-align=\"center\" data-size=\",\" data-percentage=\"auto,auto\"\r\n"
 							+ "                data-file-name=\"sesil.png\" data-file-size=\"1736380\" data-origin=\",\" data-image-link=\"http://www.sesil.kr/\" style=\"\">\r\n"
 							+ "        </a>\r\n" + "    </figure>\r\n" + "</div>\r\n" + "<p><br></p>\r\n"
@@ -84,7 +84,7 @@ public class WorkRepositoryTests {
 							+ "<div class=\"se-component se-image-container __se__float-none\">\r\n"
 							+ "    <figure>\r\n"
 							+ "        <a target=\"_blank\" href=\"http://sesil.kr/bbs/write.php?bo_table=estimate\" data-image-link=\"image\">\r\n"
-							+ "            <img src=\"http://localhost:3000/boardImgs/portfolioImgs/03340b04-dba4-4903-a541-8406d6b2fa87_sesil2.jpg\"\r\n"
+							+ "            <img src=\"/boardImgs/portfolioImgs/03340b04-dba4-4903-a541-8406d6b2fa87_sesil2.jpg\"\r\n"
 							+ "                alt=\"\" data-rotate=\"\" data-proportion=\"true\" data-size=\",\" data-align=\"none\" data-percentage=\"auto,auto\"\r\n"
 							+ "                data-file-name=\"sesil2.jpg\" data-file-size=\"308359\" data-origin=\",\" data-image-link=\"http://sesil.kr/bbs/write.php?bo_table=estimate\" style=\"\">\r\n"
 							+ "        </a>\r\n" + "    </figure>\r\n" + "</div>",
@@ -155,8 +155,8 @@ public class WorkRepositoryTests {
 					Category.기타, Category.기타, Category.기타, Category.기타, Category.홈페이지, };
 
 			String[][] toolArr = {
-					{ "photoshop", "illustrator", "afterEffect", "vscode", "sts", "springboot", "javascript", "java",
-							"gradle", "querydsl", "react", "redux", "mobx", "heidiSQL", "mariaDB" },
+					{ "photoshop", "illustrator", "vscode", "docker", "sts", "springboot", "javascript", "java",
+							"gradle", "querydsl", "react", "redux", "mobx", "heidiSQL", "mariaDB", "jenkins" },
 					{ "photoshop", "illustrator" }, { "illustrator" }, { "photoshop", "illustrator" },
 					{ "illustrator" }, { "photoshop" }, { "photoshop" }, { "photoshop", "illustrator" },
 					{ "photoshop", "illustrator" }, { "photoshop", "illustrator" }, { "illustrator" }, { "photoshop" },
