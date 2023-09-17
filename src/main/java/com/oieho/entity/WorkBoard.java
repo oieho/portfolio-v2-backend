@@ -41,7 +41,7 @@ public class WorkBoard extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column
-	private Long wno;
+	Long wno;
 
 	@Column(length = 1500000)
 	private String portfolioContent;
