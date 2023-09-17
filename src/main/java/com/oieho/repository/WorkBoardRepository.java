@@ -28,7 +28,7 @@ public interface WorkBoardRepository extends JpaRepository<WorkBoard, Long>, Que
 			@Param("title") String title, @Param("description") String description,
 			@Param("category") Category category, @Param("hits") Integer hits);
 
-	@Query("SELECT count(b.wno) FROM WorkBoard b")
+	@Query("SELECT max(b.wno)+1 FROM WorkBoard b")
 	Long countWno();
 
 	@Transactional
