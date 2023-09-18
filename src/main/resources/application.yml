@@ -13,7 +13,7 @@ spring:
     driver-class-name: org.mariadb.jdbc.Driver
     url: jdbc:mariadb://54.180.58.152:3306/my_database
     username: newRoot
-    password: dlxodns123
+    password: dlxodns1231267
       
   jpa:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
