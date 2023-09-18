@@ -1,4 +1,4 @@
 
-[submodule "submodule-portfolio-v2b"]
-	path = src/main/resources/submodule-portfolio-v2b
+[submodule "src/main/resources/submodule-portfolio-v2-backend"]
+	path = src/main/resources/submodule-portfolio-v2-backend
 	url = https://github.com/oieho/submodule-portfolio-v2b.git
