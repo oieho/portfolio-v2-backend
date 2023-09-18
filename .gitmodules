@@ -1,7 +1,4 @@
 
-[submodule "src/main/resources/submodule-portfolio-v2-backend"]
-	path = src/main/resources/submodule-portfolio-v2-backend
-	url = https://github.com/oieho/submodule-portfolio-v2b.git
 [submodule "src/main/resources/submodule"]
 	path = src/main/resources/submodule
 	url = https://github.com/oieho/submodule-portfolio-v2b.git
