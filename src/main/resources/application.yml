@@ -13,7 +13,7 @@ spring:
     driver-class-name: org.mariadb.jdbc.Driver
     url: jdbc:mariadb://54.180.58.152:3306/my_database
     username: newRoot
-    password: ${DBPW}
+    password: $DBPW
       
   jpa:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
@@ -79,8 +79,8 @@ spring:
           starttls:
             enable: true
 jwt:
-  secret: ${JSECRET}
-  authToken: ${JSECRET}
+  secret: $JSECRET
+  authToken: $JSECRET
   accessExpire: 30000000
   refreshExpire: 6000000
    
