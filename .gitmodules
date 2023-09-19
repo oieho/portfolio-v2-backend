@@ -1,3 +1,3 @@
 [submodule "submodule-portfolio-v2b"]
 	path = submodule-portfolio-v2b
-	url = git@github.com:oieho/submodule-portfolio-v2b.git
+	url = https://github.com/oieho/submodule-portfolio-v2b.git
