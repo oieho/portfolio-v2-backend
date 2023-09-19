@@ -74,6 +74,6 @@ processResources.dependsOn('copySubmodule')
 
 task copySubmodule(type: Copy) {
     from './submodule-portfolio-v2b'
-    include '*.yaml'
+    include '*.yml'
     into './src/main/resources'
 }
