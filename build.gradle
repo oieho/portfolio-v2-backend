@@ -70,10 +70,11 @@ tasks.named('test') {
 	//useJUnitPlatform()
 }
 
-processResources.dependsOn('copySecret')
-
-tasks.register('copySecret', Copy) {
+task copyDev(type: Copy) {
     from './submodule-portfolio-v2b'
-    include "application.yml"  // 복사할 파일들
-    into './src/main/resources'  // 복사 위치
+    into './src/main/resources'
+}
+
+build {
+    dependsOn copyDev
 }
