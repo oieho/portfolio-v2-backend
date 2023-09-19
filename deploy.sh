@@ -18,9 +18,6 @@ fi
 
 echo " ??   애플리케이션을 실행하는데 필요한 환경변수를 세팅합니다.\n"
 
-export FIRST_MALLANG_ENV="oieho"
-export SECOND_MALLANG_ENV=1234
-export SPRING_PROFILES_ACTIVE="dev"
 export RDS_DRIVER="org.mariadb.jdbc.Driver"
 export RDS_URL="jdbc:mariadb://54.180.58.152:3306/my_database"
 export RDS_USERNAME="newRoot"
