@@ -22,9 +22,9 @@ export FIRST_MALLANG_ENV="oieho"
 export SECOND_MALLANG_ENV=1234
 export SPRING_PROFILES_ACTIVE="dev"
 export RDS_DRIVER="org.mariadb.jdbc.Driver"
-export RDS_URL="jdbc:mariadb://svc.sel3.cloudtype.app:31795/oieho"
-export RDS_USERNAME="root"
-export RDS_PASSWORD="RooT3%3"
+export RDS_URL="jdbc:mariadb://54.180.58.152:3306/my_database"
+export RDS_USERNAME="newRoot"
+export RDS_PASSWORD="zodgij230948sld"
 
 echo " ??   애플리케이션 실행합니다~ ??\n"
 
