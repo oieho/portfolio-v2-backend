@@ -1,6 +1,6 @@
 #!/bin/sh
 
-PORT=8085
+PORT=8088
 JAR_NAME=backend-1-0.0.1-SNAPSHOT.jar
 
 
