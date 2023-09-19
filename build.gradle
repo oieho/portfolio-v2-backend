@@ -69,3 +69,11 @@ tasks.named('test') {
 	exclude '**/*'
 	//useJUnitPlatform()
 }
+
+task copyPrivate(type: Copy) {
+	copy {
+		from './submodule-portfolio-v2b'
+		include "*.yml"
+		into 'src/main/resources'
+	}
+}
