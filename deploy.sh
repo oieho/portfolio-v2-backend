@@ -1,8 +1,8 @@
 #!/bin/sh
 
 PORT=8088
-PROJECT_PATH=/
-JAR_NAME=/backend-1-0.0.1-SNAPSHOT.jar
+PROJECT_PATH=/home/ubuntu/
+JAR_NAME=/home/ubuntu/backend-1-0.0.1-SNAPSHOT.jar
 echo "\n ??   [$PROJECT_PATH/$PROJECT_NAME] 경로로 이동합니다.\n"
 
 cd $PROJECT_PATH
