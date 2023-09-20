@@ -41,4 +41,4 @@ export RDS_PASSWORD="szod57fijokfj2333"
 
 echo " ??   애플리케이션 실행합니다~ ??\n"
 
-nohup java -jar $JAR_NAME 1>> build.log 2>> build_error.log &
+BUILD_ID=dontKillMe nohup java -jar $JAR_NAME 1>> build.log 2>> build_error.log &
