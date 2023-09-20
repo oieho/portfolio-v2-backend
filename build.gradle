@@ -69,7 +69,6 @@ tasks.named('test') {
 	exclude '**/*'
 	//useJUnitPlatform()
 }
-<<<<<<< HEAD
 
 task copyDev(type: Copy) {
     from './submodule-portfolio-v2b'
@@ -79,5 +78,3 @@ task copyDev(type: Copy) {
 build {
     dependsOn copyDev
 }
-=======
->>>>>>> 42c2570 (no message)
