@@ -1,8 +1,8 @@
 #!/bin/sh
 
 PORT=8088
-PROJECT_PATH=/home/ubuntu/
-JAR_NAME=/home/ubuntu/backend-1-0.0.1-SNAPSHOT.jar
+PROJECT_PATH=/
+JAR_NAME=/backend-1-0.0.1-SNAPSHOT.jar
 echo "\n ??   [$PROJECT_PATH/$PROJECT_NAME] 경로로 이동합니다.\n"
 
 cd $PROJECT_PATH
@@ -41,4 +41,4 @@ export RDS_PASSWORD="szod57fijokfj2333"
 
 echo " ??   애플리케이션 실행합니다~ ??\n"
 
-BUILD_ID=dontKillMe nohup java -jar $JAR_NAME 1>> build.log 2>> build_error.log &
+nohup java -jar $JAR_NAME 1>> build.log 2>> build_error.log &
