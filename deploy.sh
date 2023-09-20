@@ -1,7 +1,11 @@
 #!/bin/sh
 
 PORT=8088
+<<<<<<< HEAD
 JAR_NAME=/home/ubuntu/backend-1-0.0.1-SNAPSHOT.jar
+=======
+JAR_NAME=backend-1-0.0.1-SNAPSHOT.jar
+>>>>>>> 42c2570 (no message)
 
 
 echo " ??   [$PORT] 번 포트를 사용하는 애플리케이션을 찾습니다...\n"
@@ -18,11 +22,21 @@ fi
 
 echo " ??   애플리케이션을 실행하는데 필요한 환경변수를 세팅합니다.\n"
 
+<<<<<<< HEAD
 export SPRING_PROFILES_ACTIVE="dev"
 export RDS_DRIVER="org.mariadb.jdbc.Driver"
 export RDS_URL="jdbc:mariadb://54.180.58.152:3306/my_database"
 export RDS_USERNAME="newRoot"
 export RDS_PASSWORD="szod57fijokfj2333"
+=======
+export FIRST_MALLANG_ENV="oieho"
+export SECOND_MALLANG_ENV=1234
+export SPRING_PROFILES_ACTIVE="dev"
+export RDS_DRIVER="org.mariadb.jdbc.Driver"
+export RDS_URL="jdbc:mariadb://svc.sel3.cloudtype.app:31795/oieho"
+export RDS_USERNAME="root"
+export RDS_PASSWORD="RooT3%3"
+>>>>>>> 42c2570 (no message)
 
 echo " ??   애플리케이션 실행합니다~ ??\n"
 
