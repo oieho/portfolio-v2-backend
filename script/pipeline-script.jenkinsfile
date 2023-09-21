@@ -24,7 +24,7 @@ pipeline {
         stage('publish') {
             steps {
                sshagent(credentials: ['ec2']) {
-				   sh "ssh -o StrictHostKeyChecking=no ubuntu@${env.EC2_IP}
+				   sh "ssh -o StrictHostKeyChecking=no ubuntu@172.31.8.204
                    sh "scp build/libs/backend-1-0.0.1-SNAPSHOT.jar ubuntu@172.31.8.204:/home/ubuntu"
                    sh "scp script/deploy-script.sh ubuntu@172.31.8.204:/home/ubuntu"
                    sh "ssh ubuntu@172.31.8.204 'sh /home/ubuntu/deploy-script.sh' "
