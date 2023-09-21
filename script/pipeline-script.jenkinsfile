@@ -1,0 +1,43 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('github clone') {
+            steps {
+                checkout scmGit(
+                    branches: [[name: '*/master']],
+                    extensions: [submodule(parentCredentials: true,reference: '', trackingSubmodules: true)],
+                    userRemoteConfigs: [[credentialsId: 'git-account', url: 'https://github.com/oieho/portfolio-v2-backend.git']]
+                )
+            }
+        }
+
+        stage('build'){
+            steps {
+                sh '''
+                    chmod +x ./gradlew
+                    ./gradlew clean bootJar
+                '''
+            }
+        }
+
+        stage('publish') {
+            steps {
+               sshagent(credentials: ['ec2']) {
+                   sh "scp build/libs/jwp-shopping-order.jar ubuntu@172.31.8.204:/home/ubuntu"
+                   sh "scp script/deploy-script.sh ubuntu@172.31.8.204:/home/ubuntu"
+                   sh "ssh ubuntu@172.31.8.204 'sh /home/ubuntu/deploy-script.sh' "
+               }
+           }
+        }
+    }
+
+    post {
+        always {
+            cleanWs(cleanWhenNotBuilt: true,
+                    deleteDirs: true,
+                    disableDeferredWipeout: true,
+                    notFailBuild: true)
+        }
+    }
+}
