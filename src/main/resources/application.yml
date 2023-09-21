@@ -5,7 +5,7 @@ spring:
   servlet:
     multipart:
       enabled: true
-      location: ${user.home}/boardImgs
+      location: ${user.home}/uploadTempBoardImgs # 홈 디렉토리 아래의 boardImgs
       max-request-size: 30MB
       max-file-size: 10MB
 
