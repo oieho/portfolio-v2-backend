@@ -6,10 +6,6 @@ ABSDIR=$(dirname $ABSPATH)
 APPNAME="backend-1-0.0.1-SNAPSHOT"
 APPDIR=${ABSDIR}/${APPNAME}
 
-echo " ??   서브모듈의 설정파일을 가져옵니다.\n"
-
-git submodule update
-
 echo "구동중인 애플리케이션을 확인합니다."
 
 CURRENT_PID=$(pgrep -f ${APPNAME}.jar)
