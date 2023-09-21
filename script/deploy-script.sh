@@ -1,6 +1,7 @@
 #!/bin/bash
 
 PORT=8088
+JAR_NAME=/home/ubuntu/backend-1-0.0.1-SNAPSHOT.jar
 
 echo "구동중인 애플리케이션을 확인합니다."
 
@@ -14,4 +15,4 @@ fi
 
 echo "애플리케이션을 실행합니다."
 
-nohup java -jar /home/ubuntu/backend-1-0.0.1-SNAPSHOT.jar 1>> build.log 2>> build_error.log &
+nohup java -jar $JAR_NAME 1>> build.log 2>> build_error.log &
