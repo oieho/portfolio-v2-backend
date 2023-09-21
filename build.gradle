@@ -71,7 +71,7 @@ tasks.named('test') {
 }
 
 task copyDev(type: Copy) {
-    from './submodule-portfolio-v2b'
+    from './submodulegit'
     into './src/main/resources'
 }
 

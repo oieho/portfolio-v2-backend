@@ -1,3 +1,3 @@
-[submodule "gitsubmodule"]
-	path = gitsubmodule
-	url = https://github.com/oieho/gitsubmodule.git
+[submodule "submodulegit"]
+	path = submodulegit
+	url = https://github.com/oieho/submodulegit.git
