@@ -71,7 +71,7 @@ tasks.named('test') {
 }
 
 task copyDev(type: Copy) {
-    from './submodulegit'
+    from './applicationyml'
     into './src/main/resources'
 }
 
