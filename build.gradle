@@ -69,12 +69,3 @@ tasks.named('test') {
 	exclude '**/*'
 	//useJUnitPlatform()
 }
-
-task copyDev(type: Copy) {
-    from './applicationyml'
-    into './src/main/resources'
-}
-
-build {
-    dependsOn copyDev
-}

@@ -36,9 +36,3 @@ out/
 
 ### VS Code ###
 .vscode/
-<<<<<<< HEAD
-
-# Ignore application.yml in src/main/resources
-src/main/resources/application.yml
-=======
->>>>>>> 42c2570 (no message)
