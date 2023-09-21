@@ -1,0 +1,97 @@
+server:
+  port: 8085
+
+spring:
+  servlet:
+    multipart:
+      enabled: true
+      location: ${user.home}/uploadImgs
+      max-request-size: 30MB
+      max-file-size: 10MB
+
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://54.180.58.152:3306/my_database
+    username: newRoot
+    password: dsfo23409sd1
+      
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        show_sql: info
+        format_sql: true
+        
+  # Security OAuth
+  security:
+    oauth2.client:
+      registration:
+        google:
+          clientId: 296392638880-eli5pf5g45qkt766pqdpdn471fhis403.apps.googleusercontent.com
+          clientSecret: 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
+          scope:
+            - email
+            - profile
+        naver:
+          clientId: Q4qHkQ6CRNPYPmBVCf7g
+          clientSecret: AO88hHtcph
+          clientAuthenticationMethod: post
+          authorizationGrantType: authorization_code
+          redirectUri: "{baseUrl}/{action}/oauth2/code/{registrationId}"
+          scope:
+            - nickname
+            - email
+          clientName: Naver
+        kakao:
+          clientId: bbc87c6fde6c87b2e6c0e5df504355e6
+          clientSecret: Yf4RE6oGYvhCBrMqMiS69HesIHtzsfwn
+          clientAuthenticationMethod: post
+          authorizationGrantType: authorization_code
+          redirectUri: "{baseUrl}/{action}/oauth2/code/{registrationId}"
+          scope:
+            - profile_nickname
+            - account_email
+          clientName: Kakao
+      # Provider 설정
+      provider:
+        naver:
+          authorizationUri: https://nid.naver.com/oauth2.0/authorize
+          tokenUri: https://nid.naver.com/oauth2.0/token
+          userInfoUri: https://openapi.naver.com/v1/nid/me
+          userNameAttribute: response
+        kakao:
+          authorizationUri: https://kauth.kakao.com/oauth/authorize
+          tokenUri: https://kauth.kakao.com/oauth/token
+          userInfoUri: https://kapi.kakao.com/v2/user/me
+          userNameAttribute: id
+          
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: oiehomail
+    password: hgigfmsyxuebauyd
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+jwt:
+  secret: 236979CB6F1AD6B6A6184A31E6BE37DB3818CC36871E26235DD67DCFE4041492
+  authToken: 236979CB6F1AD6B6A6184A31E6BE37DB3818CC36871E26235DD67DCFE4041492
+  accessExpire: 30000000
+  refreshExpire: 6000000
+   
+app:
+  oauth2:
+    authorizedRedirectUris:
+      - http://54.180.58.152:3000/oauth/redirect
+      
+logging:
+  level:
+    root: info
+    
+upload:
+  path: static/boardImgs
