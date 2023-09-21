@@ -1,4 +1,0 @@
-[submodule "applicationyml"]
-	path = applicationyml
-	url = https://github.com/oieho/portfolio-v2-backend.git
-	branch = master
