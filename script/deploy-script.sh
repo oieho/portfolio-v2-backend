@@ -4,7 +4,7 @@
 cd "$(dirname "$0")"
 
 PORT=8088
-JAR_NAME=/전체/경로/backend-1-0.0.1-SNAPSHOT.jar
+JAR_NAME=/home/ubuntu/backend-1-0.0.1-SNAPSHOT.jar
 
 echo " ??   [$PORT] 번 포트를 사용하는 애플리케이션을 찾습니다...\n"
 
