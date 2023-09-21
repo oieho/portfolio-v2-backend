@@ -18,4 +18,4 @@ fi
 
 echo "애플리케이션을 실행합니다."
 
-nohup java -jar ${ABSDIR}/${APPNAME}.jar 1>> build.log 2>> build_error.log &
+nohup java -jar /${APPNAME}.jar 1>> build.log 2>> build_error.log &
