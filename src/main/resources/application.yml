@@ -2,12 +2,13 @@ server:
   port: 8088
 
 spring:
-  datasource:
-    driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://localhost:3306/oieho
-    username: root
-    password: root
-  
+  profiles:
+    active: local # default
+    group:
+      local:
+        - local
+      prod:
+        - secret
   servlet:
     multipart:
       enabled: true
