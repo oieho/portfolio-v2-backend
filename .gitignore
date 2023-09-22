@@ -38,4 +38,3 @@ out/
 .vscode/
 
 /secretyml/
-/src/main/resources/application-secret.yml
