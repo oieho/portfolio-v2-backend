@@ -8,7 +8,6 @@ spring:
       local:
         - local
       prod:
-        - local
         - secret
   servlet:
     multipart:

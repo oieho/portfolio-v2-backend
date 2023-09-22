@@ -45,7 +45,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/api/members")
+@RequestMapping("/members")
 public class MemberController {
 	private final PasswordEncoder passwordEncoder;
 	private final MemberService memberService;
