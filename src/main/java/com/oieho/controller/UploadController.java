@@ -43,7 +43,7 @@ public class UploadController {
 	@Value("${upload.path}") // application.properties의 변수
 	private String uploadPath;
 
-	@PostMapping("/api/gettingUrlOnPortfolioImg")
+	@PostMapping("/gettingUrlOnPortfolioImg")
 	public ResponseEntity<Map<String, Object>> gettingUrlOnPortfolioImg(
 			@RequestParam(name = "uploadFile") MultipartFile[] uploadFiles) throws Exception {
 		Map<String, Object> fileData = new HashMap<>();
@@ -86,7 +86,7 @@ public class UploadController {
 	}
 
 
-	@PostMapping("/api/generateThumbnailDir")
+	@PostMapping("/generateThumbnailDir")
 	public ResponseEntity<?> generateThumbnailDir(@RequestParam(name = "thumbnailFile") MultipartFile thumbnailFile)
 			throws Exception {
 
@@ -115,7 +115,7 @@ public class UploadController {
 		return new ResponseEntity<String>(thumbnailSaveName, HttpStatus.OK);
 	}
 	
-	@GetMapping("/api/display/{wno}")
+	@GetMapping("/display/{wno}")
 	public ResponseEntity<byte[]> getFile(@PathVariable("wno") Long wno) {
 	    try {
 	        List<WorkImage> workImage = imageRepository.findAllByWorkBoardWno(wno);

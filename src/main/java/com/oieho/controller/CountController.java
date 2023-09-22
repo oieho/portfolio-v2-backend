@@ -32,7 +32,7 @@ public class CountController {
 	private final DummyIPRepository dummyRepository;
 
 	@Transactional
-	@GetMapping("/api/counts")
+	@GetMapping("/counts")
 	public ResponseEntity<List<Count>> list() throws Exception {
 		String clientIP = getUserIp();
 		Count thisis = new Count();

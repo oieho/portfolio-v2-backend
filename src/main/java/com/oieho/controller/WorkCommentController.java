@@ -34,7 +34,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
-@RequestMapping("/api/boards/comment")
+@RequestMapping("/boards/comment")
 @RequiredArgsConstructor
 public class WorkCommentController {
 	private final WorkCommentService commentService;
