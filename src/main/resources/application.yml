@@ -2,18 +2,19 @@ server:
   port: 8088
 
 spring:
+  profiles:
+    active: local # default
+    group:
+      local:
+        - local
+      prod:
+        - secret
   servlet:
     multipart:
       enabled: true
-      location: ${user.home}/boardImgs
+      location: ${user.home}/uploadImgs
       max-request-size: 30MB
       max-file-size: 10MB
-
-  datasource:
-    driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://54.180.58.152:3306/my_database
-    username: newRoot
-    password: dlxodns123
       
   jpa:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
