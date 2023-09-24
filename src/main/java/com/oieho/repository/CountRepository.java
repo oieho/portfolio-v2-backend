@@ -27,8 +27,4 @@ public interface CountRepository extends JpaRepository<Count, Long> {
 	@Query("UPDATE Count SET todayVar = 0 WHERE criteriaVar = 1")
 	public Integer updateTodayZero();
 
-
-	@Query("SELECT c.todayVar FROM Count c WHERE c.criteriaVar = :criteriaVar")
-	public Count getReference(@Param("criteriaVar") int criteriaVar);
-	
 }
