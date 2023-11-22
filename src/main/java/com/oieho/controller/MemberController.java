@@ -63,8 +63,8 @@ public class MemberController {
 	public ResponseEntity<?> getMyInfo(HttpServletRequest request,HttpServletResponse response) throws Exception {
 		String header = request.getHeader(SecurityConstants.TOKEN_HEADER);
 		String header2 = request.getHeader(SecurityConstants.REFRESH_HEADER);
-		System.out.println("header1::"+header);
-		System.out.println("header2::"+header2);
+//		System.out.println("header1::"+header);
+//		System.out.println("header2::"+header2);
 		if(header == null || header2 == null) {
 			System.out.println("isn't authorized.");
 			return new ResponseEntity<Boolean>(false,HttpStatus.OK);

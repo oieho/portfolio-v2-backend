@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -66,6 +67,7 @@ public class AuthController {
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	@GetMapping(value="/refresh")
     public ResponseEntity<String> refresh(HttpServletRequest request,HttpServletResponse response)  throws Exception{
+		HttpHeaders headers = new HttpHeaders();
 		final long THREE_DAYS_MSEC = 259200000;
 		final String ACCESS_TOKEN = "accessToken";
 		final String REFRESH_TOKEN = "refreshToken";
@@ -82,7 +84,8 @@ public class AuthController {
 		String[] base64Payload = null;
 		if((oldAccessToken == null & oldRefreshToken == null) || (oldAccessToken.equals("undefined") | oldRefreshToken.equals("undefined"))) { // 로그인 안한 상태에서 새로고침시 null 값 처리하여 exception 예방
 			System.out.println("All tokens are expired.");
-			return new ResponseEntity<String>(SecurityConstants.invalidAllTokens,HttpStatus.OK);
+			headers.add(SecurityConstants.INVALID_ALL_TOKEN_HEADER, SecurityConstants.invalidAllTokens);
+			return new ResponseEntity<String>(headers, HttpStatus.OK);
 		}
 		if(oldAccessToken.equals("null")) {
 			base64Payload = oldRefreshToken.split("\\.");
@@ -125,34 +128,38 @@ public class AuthController {
 		if (accessClaims == null & refreshClaims == null) { //두 토큰이 만료된 후 새로고침되면 토큰 재발급을 못하게 설정
 			
 			System.out.println("All tokens are expired.");
-			return new ResponseEntity<String>(SecurityConstants.invalidAllTokens,HttpStatus.OK);
+			headers.add(SecurityConstants.INVALID_ALL_TOKEN_HEADER, SecurityConstants.invalidAllTokens);
+			return new ResponseEntity<String>(headers, HttpStatus.OK);
 		}
 		if (accessClaims == null) { // accessToken 이 만료될 경우
 			if (!RefreshToken.validate()) {
 				System.out.println("All tokens Are invalid");
-				return new ResponseEntity<String>(SecurityConstants.invalidAllTokens,HttpStatus.OK); // access, refresh tokens are invalid.
+				headers.add(SecurityConstants.INVALID_ALL_TOKEN_HEADER, SecurityConstants.invalidAllTokens);
+				return new ResponseEntity<String>(headers, HttpStatus.OK); // access, refresh tokens are invalid.
 			} else if(refreshClaims != null){
 				System.out.println("returnMap::: "+returnMap);
 				long userNo = Long.parseLong(String.valueOf(returnMap.get("uno")));
 				userId = (String) returnMap.get("uid");
-				RefreshToken newUserRefreshToken = refreshTokenRepository.findByUserIdAndRefreshToken(userId, oldRefreshToken);
+				RefreshToken newUserRefreshToken = refreshTokenRepository.findByUserId(userId);
 				System.out.println("userId   "+userId+"   newUserRefreshToken::"+newUserRefreshToken+"           :::oldRefresh:::"+oldRefreshToken);
 				if (newUserRefreshToken == null) {
 					System.out.println("리프레시 토큰이 DB에 존재하지 않아 액세스 토큰을 발행하지 않습니다.");
-					return new ResponseEntity<String>(SecurityConstants.invalidRefreshToken,HttpStatus.OK);
+					headers.add(SecurityConstants.INVALID_REFRESH_TOKEN_HEADER, SecurityConstants.invalidRefreshToken);
+					return new ResponseEntity<String>(headers, HttpStatus.OK);
 				} else {
 					String newAccessToken = jwtTokenProvider.createNewAccessToken(userNo, userId, roles);
 					System.out.println("Access Token 이 만료되고 Refresh Token이 유효하면 Access Token 재발행");
 					System.out.println(newAccessToken);
-					response.addHeader(SecurityConstants.TOKEN_HEADER, SecurityConstants.TOKEN_PREFIX + newAccessToken);
-					return new ResponseEntity<String>(HttpStatus.OK);
+					headers.add(SecurityConstants.TOKEN_HEADER, SecurityConstants.TOKEN_PREFIX + newAccessToken);
+					return new ResponseEntity<String>(headers, HttpStatus.OK);
 				}
 			} 
 		}
 		if (refreshClaims == null) { // refreshToken 이 만료될 경우
 			if (!accessToken.validate()) { //[유효하지 않음 = !accessToken.validate()]
 				System.out.println("유효하지 않은 액세스 토큰");
-	            return new ResponseEntity<String>(SecurityConstants.invalidAccessToken,HttpStatus.OK);
+				headers.add(SecurityConstants.INVALID_ACCESS_TOKEN_HEADER, SecurityConstants.invalidAccessToken);
+	            return new ResponseEntity<String>(headers, HttpStatus.OK);
 	        } else {
 	        	long userNo = Long.parseLong(String.valueOf(returnMap.get("uno")));
 	        	userId = (String) returnMap.get("uid");
@@ -166,8 +173,8 @@ public class AuthController {
 	    				.getBody().getExpiration().getTime());
 	        	refreshTokenRepository.updateRefreshToken(userId, newRefreshtoken, expirationTime);
 	        	System.out.println("newRefreshtoken::"+newRefreshtoken);
-		        response.addHeader(SecurityConstants.REFRESH_HEADER, SecurityConstants.REFRESH_PREFIX + newRefreshtoken);
-				return new ResponseEntity<String>(HttpStatus.OK);
+	        	headers.add(SecurityConstants.REFRESH_HEADER, SecurityConstants.REFRESH_PREFIX + newRefreshtoken);
+				return new ResponseEntity<String>(headers, HttpStatus.OK);
 	        }
 		}
 		
@@ -178,7 +185,6 @@ public class AuthController {
 			userId = (String) returnMap.get("uid");
 			
 			AuthToken newRefreshToken = jwtTokenProvider.createAuthToken(userNo, userId, refreshToken, roles);
-			System.out.println("newRefreshToken:::"+newRefreshToken);
         	// DB에 refresh 토큰 업데이트
         	String updateRefreshToStr = newRefreshToken.getToken();
     		expirationTime = new Date(Jwts.parserBuilder()
@@ -189,9 +195,9 @@ public class AuthController {
         	refreshTokenRepository.updateRefreshToken(userId, updateRefreshToStr, expirationTime);
         	//@GetMapping("/myinfo")에서는 이전(처음 로그인할 경우[successfulAuthentication], 세 번째 새로고침일 경우[이전에 메서드 내부에서 얻은 토큰])에 발급 받은 토큰으로 유효성 검증
             System.out.println("3일 이하 유효기간 리프레시 토큰 재발급 : "+newRefreshToken);
-            response.addHeader(SecurityConstants.REFRESH_HEADER, SecurityConstants.REFRESH_PREFIX + newRefreshToken);
+            headers.add(SecurityConstants.REFRESH_HEADER, SecurityConstants.REFRESH_PREFIX + newRefreshToken);
 		}
 		System.out.println("access/refresh tokens are valid");
-		return new ResponseEntity<String>(HttpStatus.OK);
+		return new ResponseEntity<String>(headers, HttpStatus.OK);
     }
 }
