@@ -42,6 +42,7 @@ public class OAuth2AuthorizationRequestBasedOnCookieRepository implements Author
         }
     }
     
+    @Override
     public OAuth2AuthorizationRequest removeAuthorizationRequest(HttpServletRequest request) {
         return this.loadAuthorizationRequest(request);
     }
