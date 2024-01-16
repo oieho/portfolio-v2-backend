@@ -40,7 +40,7 @@ public class WorkCommentController {
 	private final WorkCommentService commentService;
 	
 	@GetMapping("/{boardNo}")
-	public ResponseEntity<List<CommentDTO>> list(@PathVariable("boardNo") Long boardNo)  throws Exception{
+	public ResponseEntity<List<CommentDTO>> list(@PathVariable("boardNo") Long boardNo) throws Exception{
 		List<CommentDTO> comment = commentService.commentlist(boardNo);
 		return new ResponseEntity<List<CommentDTO>>(comment, HttpStatus.OK);
 	}
