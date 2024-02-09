@@ -34,6 +34,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oieho.dto.MailDTO;
 import com.oieho.entity.Member;
 import com.oieho.entity.RecoverPassword;
+import com.oieho.jwt.JwtTokenProvider;
 import com.oieho.jwt.SecurityConstants;
 import com.oieho.repository.RecoverPasswordRepository;
 import com.oieho.service.MailService;
@@ -52,6 +53,7 @@ public class MemberController {
 	private final MailService mailService;
     private final JavaMailSender javaMailSender;
 	private final RecoverPasswordRepository recoverRepository;
+	private final JwtTokenProvider jwtTokenProvider;
 	
 	@GetMapping("/admin")
 	@PreAuthorize("hasRole('ADMIN')")
@@ -63,30 +65,23 @@ public class MemberController {
 	public ResponseEntity<?> getMyInfo(HttpServletRequest request,HttpServletResponse response) throws Exception {
 		String header = request.getHeader(SecurityConstants.TOKEN_HEADER);
 		String header2 = request.getHeader(SecurityConstants.REFRESH_HEADER);
-//		System.out.println("header1::"+header);
-//		System.out.println("header2::"+header2);
+		System.out.println("header1::"+header);
+		System.out.println("header2::"+header2);
 		if(header == null || header2 == null) {
 			System.out.println("isn't authorized.");
 			return new ResponseEntity<Boolean>(false,HttpStatus.OK);
 		}
+
 		String token = header.substring(7);
 		if(header.equals("Bearer undefined")) {
 			token = header2.substring(7);
 		}
-		String[] base64Payload = null;
-		base64Payload = token.split("\\.");
-		Base64.Decoder decoder = Base64.getUrlDecoder();
-		String payload = new String(decoder.decode(base64Payload[1]));
-		Map<String, Object> returnMap = null;
-		ObjectMapper mapper = new ObjectMapper();
-	    try {
-			returnMap = mapper.readValue(payload, Map.class);
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
-		}
-	    long userName =	Long.parseLong(String.valueOf(returnMap.get("uno")));
+		
+		Map<String, Object> extractedJwtClaims = jwtTokenProvider.extractJWTClaims(token);
+	    long userName =	Long.parseLong(String.valueOf(extractedJwtClaims.get("uno")));
 		Member member = memberService.readMyInfo(userName);
 		member.setUserPw("");
+		
 		return new ResponseEntity<>(member, HttpStatus.OK);
 	}
 	
@@ -257,7 +252,7 @@ public class MemberController {
 	        helper.setTo(email);
 	        helper.setSubject("OIEHO 비밀번호 찾기 인증 메일입니다.");
 	        helper.setText("<p>비밀번호 찾기를 요청하셨을 경우 아래에 있는 인증버튼을 누르시기 바랍니다.</p><p>인증완료 후 <b>홈페이지로 돌아간 후 비밀번호를 변경</b>하시기 바랍니다.</p>"
-	            + "<a href='http://54.180.58.152:8088/members/password/verify/"+token+"'><br><span style=\"width:120%;height:100%;border: 1px solid #000; padding: 0.6rem;border-radius:1rem;background-color:black;color:#fff;font-size: 0.85rem;\">인증하기</span></a>", true);
+	            + "<a href='http://localhost:8088/members/password/verify/"+token+"'><br><span style=\"width:120%;height:100%;border: 1px solid #000; padding: 0.6rem;border-radius:1rem;background-color:black;color:#fff;font-size: 0.85rem;\">인증하기</span></a>", true);
 	        javaMailSender.send(message);
 	    } catch (MessagingException e) {
 	        e.printStackTrace();

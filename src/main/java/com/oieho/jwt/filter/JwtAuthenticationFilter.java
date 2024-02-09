@@ -130,12 +130,13 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 			.stream()
 			.map(GrantedAuthority::getAuthority)
 			.collect(Collectors.toList());
-		System.out.println("roles:::"+roles);
+		
 		String accesstoken = jwtTokenProvider.createAccessToken(userNo, userId, userName, roles);
-		System.out.println("ACCESS::"+accesstoken);
+		System.out.println("successfulAuthentication ACCESS::"+accesstoken);
 		String refreshtoken = jwtTokenProvider.createRefreshToken(userNo, userId, roles);
 		Date expirationTime = new Date(System.currentTimeMillis() + refreshExpire);
-		System.out.println("REFRESH::"+refreshtoken);
+		System.out.println("successfulAuthentication REFRESH::"+refreshtoken);
+		
 		RefreshToken refreshTokenVar = refreshTokenRepository.findByUserId(userId);
 		 if (refreshTokenVar == null) {
 			 refreshTokenVar = new RefreshToken(userId, refreshtoken);
@@ -145,6 +146,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	        	System.out.println("재갱신 리프레시 토큰");
 	        	refreshTokenRepository.updateRefreshToken(userId, refreshtoken, expirationTime);
 	        }
+		 
 		response.addHeader(SecurityConstants.TOKEN_HEADER, SecurityConstants.TOKEN_PREFIX + accesstoken);
 		response.addHeader(SecurityConstants.REFRESH_HEADER, SecurityConstants.REFRESH_PREFIX + refreshtoken);
 	}

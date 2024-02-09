@@ -15,6 +15,7 @@ import com.oieho.entity.RefreshToken;
 @Repository
 public interface RefreshTokenRepository extends JpaRepository<RefreshToken, Long> {
     RefreshToken findByUserId(String userId);
+    RefreshToken findByUserIdAndRefreshToken(String userId, String oldRefreshToken);
     
     @Modifying
     @Query("UPDATE RefreshToken a SET a.refreshToken = :Refreshtoken, a.expirationTime = :expirationTime WHERE a.userId = :userId")
