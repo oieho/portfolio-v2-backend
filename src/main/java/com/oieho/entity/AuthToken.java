@@ -50,7 +50,7 @@ public class AuthToken {
 	}
 
 	public boolean validationCheck() {
-		System.out.println("THIS:::"+this.getTokenClaims());
+		System.out.println("validationCheck:::"+this.getTokenClaims());
 		return this.getTokenClaims() == null;
 	}
 

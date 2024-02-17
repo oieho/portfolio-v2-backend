@@ -52,6 +52,7 @@ public class AuthController {
 	@GetMapping(value = "/refresh")
 	public ResponseEntity<String> refresh(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		final long THREE_DAYS_MSEC = 259200000;
+		Boolean invalidChk = false;
 
 		final String oldAccessToken = CookieUtil.getCookie(request, "accessToken").map(Cookie::getValue).orElse((null));
 		final String oldRefreshToken = CookieUtil.getCookie(request, "refreshToken").map(Cookie::getValue).orElse((null));
@@ -70,17 +71,15 @@ public class AuthController {
 		AuthToken refreshToken = null;
 
 		if ((oldAccessToken == null && oldRefreshToken == null)
-				|| (oldAccessToken.equals("undefined") && oldRefreshToken.equals("undefined"))) {
-			System.out.println("All tokens are expired.");
-			response.addHeader(SecurityConstants.invalidAllTokens, "invalid");
-			return new ResponseEntity<String>(HttpStatus.OK);
+				|| (oldAccessToken.equals("undefined") && oldRefreshToken.equals("undefined"))) { //undefined 체크를 안하면 초기 페이지 렌더링시에 java.lang.ArrayIndexOutOfBoundsException 발생
+			invalidChk = true;
 		} else {
-			if ((oldAccessToken != null && !oldAccessToken.equals("undefined"))) {
+			if ((oldAccessToken != null)) {
 				accessToken = jwtTokenProvider.convertToValidatingToken(oldAccessToken);
 				extractedJwtClaims = jwtTokenProvider.extractJWTClaims(oldAccessToken);
 				accessClaims = accessToken.getExpiredTokenClaims(oldAccessToken);
 			} 
-			if ((oldRefreshToken != null && !oldRefreshToken.equals("undefined"))) {
+			if ((oldRefreshToken != null)) {
 				refreshToken = jwtTokenProvider.convertToValidatingToken(oldRefreshToken);
 				extractedJwtClaims = jwtTokenProvider.extractJWTClaims(oldRefreshToken);
 				refreshClaims = refreshToken.getExpiredTokenClaims(oldRefreshToken);
@@ -90,11 +89,9 @@ public class AuthController {
 		System.out.println("refreshClaims:::" + refreshClaims);
 
 		if (accessClaims == null) { // accessToken 이 만료될 경우
-			if (refreshToken.validationCheck()) {
-				System.out.println("refreshToken.validate() All tokens are invalid");
-				response.addHeader(SecurityConstants.invalidAllTokens, "invalid");
-				return new ResponseEntity<String>(HttpStatus.OK);
-			} else {
+			if (refreshToken != null && refreshToken.validationCheck()) {
+				invalidChk = true;
+			} else if(extractedJwtClaims != null) {
 				userNo = Long.parseLong(String.valueOf(extractedJwtClaims.get("uno")));
 				userId = (String) extractedJwtClaims.get("uid");
 				roles = (List<String>) extractedJwtClaims.get("rol");
@@ -103,28 +100,24 @@ public class AuthController {
 				System.out.println("userId   " + userId + "   newUserRefreshToken::" + newUserRefreshToken
 						+ "           :::oldRefresh:::" + oldRefreshToken);
 				if (newUserRefreshToken == null) {
-					System.out.println("리프레시 토큰이 DB에 존재하지 않아 액세스 토큰을 발행하지 않습니다.");
-					response.addHeader(SecurityConstants.invalidAllTokens, "invalid");
-					return new ResponseEntity<String>(HttpStatus.OK);
+					System.out.println("리프레시 토큰이 DB에 존재하지 않아 액세스 토큰을 발급하지 않습니다.");
+					invalidChk = true;
 				} else {
 					String newAccessToken = jwtTokenProvider.createNewAccessToken(userNo, userId, roles);
-					System.out.println("Access Token 이 만료되고 Refresh Token이 유효하면 Access Token 재발행");
+					System.out.println("Access Token 이 만료되고 Refresh Token이 유효하면 Access Token 재발급");
 					System.out.println("NewAccessToken::" + newAccessToken);
 					response.addHeader(SecurityConstants.TOKEN_HEADER, SecurityConstants.TOKEN_PREFIX + newAccessToken);
 					return new ResponseEntity<String>(HttpStatus.OK);
 				}
 			}
-		} 
-		if (refreshClaims == null) { // refreshToken 이 만료될 경우
-			if (accessToken.validationCheck()) { //!accessToken.validate()  false를 반환할 때 실행됩니다.
-				System.out.println("accessToken.validate() All Tokens are invalid");
-				response.addHeader(SecurityConstants.invalidAllTokens, "invalid");
-				return new ResponseEntity<String>(HttpStatus.OK);
-			} else {
+		} else if (refreshClaims == null) { // refreshToken 이 만료될 경우
+			if (accessToken != null && accessToken.validationCheck()) { //!accessToken.validate()  false를 반환할 때 실행됩니다.
+				invalidChk = true;
+			} else if(extractedJwtClaims != null){
 				userNo = Long.parseLong(String.valueOf(extractedJwtClaims.get("uno")));
 				userId = (String) extractedJwtClaims.get("uid");
 				roles = (List<String>) extractedJwtClaims.get("rol");
-				System.out.println("엑세스 토큰이 유효하면 검증하여 리프레시 토큰 재발급");
+				System.out.println("Refresh 토큰이 만료되고 AccessToken이 유효하면 검증하여 RefreshToken 재발급");
 				String newRefreshtoken = jwtTokenProvider.createRefreshToken(userNo, userId, roles);
 				expirationTime = new Date(Jwts.parserBuilder().setSigningKey(jwtConfig.getHmacShaKey()).build()
 						.parseClaimsJws(newRefreshtoken).getBody().getExpiration().getTime());
@@ -135,7 +128,12 @@ public class AuthController {
 				return new ResponseEntity<String>(HttpStatus.OK);
 			}
 		}
-
+		
+		if(invalidChk == true) {
+			response.addHeader(SecurityConstants.invalidAllTokens, "invalid");
+			return new ResponseEntity<String>(HttpStatus.OK);
+		}
+		
 		// access,refresh가 만료되지 않았으며 리프레시토큰 기간이 3일 이하로 남은 경우, refresh 토큰 갱신
 		long validTime = refreshClaims.getExpiration().getTime() - System.currentTimeMillis();
 		if (validTime <= THREE_DAYS_MSEC) {

@@ -13,22 +13,19 @@ import lombok.Setter;
 @Getter
 @Setter
 public class JwtConfig {
-    private String signingKey;
     private String authToken;
     private long accessExpire;
     private long refreshExpire;
     private Key hmacShaKey;
 
     @Autowired
-    public void init(@Value("${jwt.signingKey}") String signingKey,
-                     @Value("${jwt.authToken}") String authToken,
+    public void init(@Value("${jwt.authToken}") String authToken,
                      @Value("${jwt.accessExpire}") long accessExpire,
                      @Value("${jwt.refreshExpire}") long refreshExpire) {
-        this.signingKey = signingKey;
         this.authToken = authToken;
         this.accessExpire = accessExpire;
         this.refreshExpire = refreshExpire;
-        this.hmacShaKey = Keys.hmacShaKeyFor(signingKey.getBytes());
+        this.hmacShaKey = Keys.hmacShaKeyFor(authToken.getBytes());
     }
 
 }

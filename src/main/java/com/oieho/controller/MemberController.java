@@ -69,7 +69,7 @@ public class MemberController {
 		System.out.println("header2::"+header2);
 		if(header == null || header2 == null) {
 			System.out.println("isn't authorized.");
-			return new ResponseEntity<Boolean>(false,HttpStatus.OK);
+			return new ResponseEntity<Boolean>(false, HttpStatus.OK);
 		}
 
 		String token = header.substring(7);

@@ -60,7 +60,8 @@ public final class JwtTokenProvider {
 	}
 
 	public AuthToken convertToValidatingToken(String token) {
-		return new AuthToken(token, Keys.hmacShaKeyFor(jwtConfig.getSigningKey().getBytes()));
+		Key signingSecretKey = getSigningSecretKey();
+		return new AuthToken(token, signingSecretKey);
 	}
 
 	public AuthToken createAuthToken(long userNo, String userId, List<String> roles) {
@@ -94,7 +95,7 @@ public final class JwtTokenProvider {
 
 	public String createNewAccessToken(long userNo, String id, List<String> role) {
 		Key signingSecretKey = getSigningSecretKey();
-		return Jwts.builder().setSubject(jwtConfig.getAuthToken()).claim("uno", userNo).claim("uid", id)
+		return Jwts.builder().claim("uno", userNo).claim("uid", id)
 				.claim("rol", role).signWith(signingSecretKey, SignatureAlgorithm.HS256)
 				.setExpiration(new Date(System.currentTimeMillis() + jwtConfig.getAccessExpire())).compact();
 	}
