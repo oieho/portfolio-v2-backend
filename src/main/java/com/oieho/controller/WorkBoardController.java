@@ -184,29 +184,35 @@ public class WorkBoardController {
 	}
 
 	@GetMapping("/prevnextImgs")
-	public ResponseEntity<List<Map<String, Object>>> getAllBoards(@RequestParam(required = false) String searchType,
-			@RequestParam(required = false) String keyword, @RequestParam(required = false) String title,
-			@RequestParam(required = false) String count, @RequestParam(required = false) String regDate,
-			@RequestParam(required = false) List<Long> selected, @RequestParam(required = false) String toolOrHashTag,@RequestParam(required = false) Boolean isModified) {
-		try {
-			List<Map<String, Object>> boards;
-			if (isModified == true) {
-				boards = boardService.searchByCategoryAndKeyword(searchType, keyword, title, count, regDate);
-			} else if (toolOrHashTag.equals("tool")) {
-				boards = boardService.searchByKeywordOnTool(searchType, keyword, title, count, regDate);
-			} else if (toolOrHashTag.equals("hashTag")) {
-				boards = boardService.searchByKeywordOnHashTag(searchType, keyword, title, count, regDate);
-			} else if (selected != null && !selected.isEmpty()) {
-				boards = boardService.searchByWnosAndCategoryAndKeyword(searchType, keyword, title, count, regDate,
-						selected);
-			} else {
-				boards = boardService.searchByCategoryAndKeyword(searchType, keyword, title, count, regDate);
-			}
-			return new ResponseEntity<>(boards, HttpStatus.OK);
-		} catch (Exception e) {
-			// 에러 처리
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+	public ResponseEntity<List<Map<String, Object>>> getAllBoards(
+	    @RequestParam(required = false) String searchType,
+	    @RequestParam(required = false) String keyword,
+	    @RequestParam(required = false) String title,
+	    @RequestParam(required = false) String count,
+	    @RequestParam(required = false) String regDate,
+	    @RequestParam(required = false) List<Long> selected,
+	    @RequestParam(required = false) String toolOrHashTag,
+	    @RequestParam(required = false) Boolean isModified) {
+	    try {
+	        List<Map<String, Object>> boards;
+	        if (isModified != null && isModified) {
+	            boards = boardService.searchByCategoryAndKeyword(searchType, keyword, title, count, regDate);
+	        } else if ("tool".equals(toolOrHashTag)) {
+	            boards = boardService.searchByKeywordOnTool(searchType, keyword, title, count, regDate);
+	        } else if ("hashTag".equals(toolOrHashTag)) {
+	            boards = boardService.searchByKeywordOnHashTag(searchType, keyword, title, count, regDate);
+	        } else if (selected != null && !selected.isEmpty()) {
+	            boards = boardService.searchByWnosAndCategoryAndKeyword(searchType, keyword, title, count, regDate, selected);
+	        } else {
+	            boards = boardService.searchByCategoryAndKeyword(searchType, keyword, title, count, regDate);
+	        }
+	        return new ResponseEntity<>(boards, HttpStatus.OK);
+	    } catch (Exception e) {
+	        // 에러 처리
+	        e.printStackTrace();
+	        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	    }
 	}
+
 
 }
