@@ -67,7 +67,7 @@ public class MemberController {
 		String header2 = request.getHeader(SecurityConstants.REFRESH_HEADER);
 		System.out.println("header1::"+header);
 		System.out.println("header2::"+header2);
-		if(header == null || header2 == null) {
+		if((header == null || header2 == null) || (header.equals("Bearer undefined") && header2.equals("Bearer undefined"))) {
 			System.out.println("isn't authorized.");
 			return new ResponseEntity<Boolean>(false, HttpStatus.OK);
 		}

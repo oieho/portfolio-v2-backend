@@ -12,9 +12,9 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.LockedException;
@@ -25,6 +25,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.oieho.entity.CustomUser;
+import com.oieho.entity.ExcessiveLoginAttemptsLock;
 import com.oieho.entity.RefreshToken;
 import com.oieho.jwt.JwtTokenProvider;
 import com.oieho.jwt.SecurityConstants;
@@ -37,6 +38,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	private final AuthenticationManager authenticationManager;
 	private final JwtTokenProvider jwtTokenProvider;
 	private final RefreshTokenRepository refreshTokenRepository;
+	private final RedisTemplate<String, Object> redisTemplate;
+	
 	
 	long userNo;
 	String userId;
@@ -45,67 +48,16 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	@Value("${jwt.refreshExpire}")
 	private long refreshExpire; // 864000000 == 10days
 	
-    private boolean lockTrue = true;
-	
-	public JwtAuthenticationFilter(AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider, RefreshTokenRepository refreshTokenRepository) {
+	public JwtAuthenticationFilter(AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider, RefreshTokenRepository refreshTokenRepository, RedisTemplate<String, Object> redisTemplate) {
 		this.authenticationManager = authenticationManager;
 		this.jwtTokenProvider = jwtTokenProvider;
 		this.refreshTokenRepository = refreshTokenRepository;
+		this.redisTemplate = redisTemplate;
 		
 		setFilterProcessesUrl(SecurityConstants.AUTH_LOGIN_URL);
 
 	}
 
-	@Override
-	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-		unlockLogin(request); // 로그인 잠금 해제 시도
-	    HttpSession session = request.getSession(true);
-	    int attempts = Optional.ofNullable((Integer) session.getAttribute("loginAttempts")).orElse(0);
-	    int maxAttempts = 3;
-	    int lockTime = 5;
-	    
-	    System.out.println("attempts::"+attempts);
-	    if (attempts >= maxAttempts) {
-	        try {
-				lockLogin(request, response, lockTime);
-			} catch (LockedException | IOException e) {
-				e.printStackTrace();
-			}
-	        return null;
-	    } else {
-	        String username = Optional.ofNullable(request.getParameter("username")).orElse("");
-	        String password = Optional.ofNullable(request.getParameter("password")).orElse("");
-	        log.info("username = " + username + " password = " + password);
-	        Authentication authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
-	        return authenticationManager.authenticate(authenticationToken);
-	    }
-	}
-
-	private void lockLogin(HttpServletRequest request, HttpServletResponse response, int lockTime) throws LockedException, IOException {
-        HttpSession session = request.getSession();
-        session.setAttribute("loginLocked", true);
-        long lockedUntil = System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(lockTime);
-        if(lockTrue==true) {
-        session.setAttribute("lockedUntil", lockedUntil);
-        lockTrue = false;
-        }
-        response.sendError(HttpStatus.UNAUTHORIZED.value(), "로그인이 잠겼습니다. " + lockTime + "분 후에 다시 시도해주세요.");
-        throw new LockedException("Login is locked");
-    }
-	
-	private void unlockLogin(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        if (session != null && session.getAttribute("loginLocked") != null && (boolean) session.getAttribute("loginLocked")) {
-            long lockedUntil = (long) session.getAttribute("lockedUntil");
-            if (System.currentTimeMillis() >= lockedUntil) {
-                session.removeAttribute("loginLocked");
-                session.removeAttribute("lockedUntil");
-                session.setAttribute("loginAttempts", 0);
-                lockTrue = true;
-            }
-        }
-    }
-	
 	@Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
         onAuthenticationFailure(request, response, failed);
@@ -113,14 +65,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
 	@Override
 	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain, Authentication authentication) {
-		// 성공적으로 인증된 경우 실패 횟수 초기화
-		HttpSession session = request.getSession(false);
-	    if (session != null) {
-	        session.setAttribute("loginAttempts", 0);
-	        session.setAttribute("loginLocked", false);
-	        session.setAttribute("loginLockedTime", 0L);
-	    }
-	    
 		CustomUser user = ((CustomUser) authentication.getPrincipal());	
 		
 		long userNo = user.getUserNo();
@@ -130,6 +74,14 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 			.stream()
 			.map(GrantedAuthority::getAuthority)
 			.collect(Collectors.toList());
+		
+
+		// 성공적으로 인증된 경우 로그인 잠금 실패 횟수 초기화
+	    Integer attempts = 0;
+	    String key = "login_attempt:" + userName; // 예시: 키를 username에 기반하여 생성
+	    Boolean lockLogin = false;
+	    ExcessiveLoginAttemptsLock loginUser = new ExcessiveLoginAttemptsLock(userName, attempts, lockLogin);
+        redisTemplate.opsForValue().set(key, loginUser);
 		
 		String accesstoken = jwtTokenProvider.createAccessToken(userNo, userId, userName, roles);
 		System.out.println("successfulAuthentication ACCESS::"+accesstoken);
@@ -150,18 +102,83 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		response.addHeader(SecurityConstants.TOKEN_HEADER, SecurityConstants.TOKEN_PREFIX + accesstoken);
 		response.addHeader(SecurityConstants.REFRESH_HEADER, SecurityConstants.REFRESH_PREFIX + refreshtoken);
 	}
-	
+
+	@Override
+	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
+			String username = Optional.ofNullable(request.getParameter("username")).orElse("");
+	        String password = Optional.ofNullable(request.getParameter("password")).orElse("");
+	        ExcessiveLoginAttemptsLock userAttemptsInfo = (ExcessiveLoginAttemptsLock) redisTemplate.opsForValue().get("login_attempt:"+username);
+	        Boolean lockLogin;
+	    	String key = "login_attempt:" + username;
+	    	Long ttl = redisTemplate.getExpire(key, TimeUnit.SECONDS);
+	    	
+	        if (ttl < 0) {
+	        	lockLogin = false;
+	    	} else {
+	    		lockLogin = true;
+	    	}
+	        
+	        System.out.println("lockLogin::"+lockLogin);
+	    	if(userAttemptsInfo == null) { // 최초 로그인시 정보가 없으면 정보 저장
+	    		Integer attempts = 0;
+		        lockLogin = false;
+			    ExcessiveLoginAttemptsLock loginUser = new ExcessiveLoginAttemptsLock(username, attempts, lockLogin);
+		        redisTemplate.opsForValue().set(key, loginUser);
+	    	} else if (lockLogin == true && userAttemptsInfo.getLoginAttempts() == 3) { // 시간이 경과되지 않았으면 위에서 받은 true로 유효성 검사
+				response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+				response.setHeader("ttl", String.valueOf(ttl));
+				return null;
+	    	} else if (lockLogin == false && userAttemptsInfo.getLoginAttempts() == 3) { // 시간이 경과되었으면 위에서 받은 false로 검증하여 로그인 잠금 해제
+	        	unlockLogin(request, response, username);
+	        }
+	    	
+	        log.info("username = " + username + " password = " + password);
+	        Authentication authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
+	        return authenticationManager.authenticate(authenticationToken);
+	}
+		
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-	    HttpSession session = request.getSession(false);
-	    if (session == null) {
-	        session = request.getSession(true);
+		String username = Optional.ofNullable(request.getParameter("username")).orElse("");
+		ExcessiveLoginAttemptsLock userAttemptsInfo = (ExcessiveLoginAttemptsLock) redisTemplate.opsForValue().get("login_attempt:"+username);
+		int maxAttempts = 3;
+		String key = "login_attempt:" + username;
+		ExcessiveLoginAttemptsLock loginUser;
+    	Long ttl = redisTemplate.getExpire(key, TimeUnit.SECONDS);
+		
+		Integer attempts = userAttemptsInfo.getLoginAttempts();
+		Boolean lockLogin = userAttemptsInfo.getLockLogin();
+		System.out.println("TRUEFALSE::"+userAttemptsInfo.getLockLogin());
+		
+		if(attempts < 3 && lockLogin == false) {
+			attempts++;
+			userAttemptsInfo.setLoginAttempts(attempts);
+	    	redisTemplate.opsForValue().set(key, userAttemptsInfo);
+		} 
+	    if (attempts == maxAttempts && userAttemptsInfo.getLockLogin() == false) {
+	    	loginUser = new ExcessiveLoginAttemptsLock(username, attempts, lockLogin);
+	    	redisTemplate.opsForValue().set(key, loginUser, 300, TimeUnit.SECONDS); // set은 최초, maxAttempts가 3일 때만 해야 함. 안그러면 ttl(Time to live)이 -1로 초기화 됌.
+	    	ttl = redisTemplate.getExpire(key, TimeUnit.SECONDS);
+	    	response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+	    	response.setHeader("ttl", String.valueOf(ttl));
 	    }
-	    Integer attempts = (Integer) session.getAttribute("loginAttempts");
-	    if (attempts == null) {
-	        attempts = 0;
-	    }
-	    attempts++;
-	    session.setAttribute("loginAttempts", attempts);
 	}
 	
+	private void unlockLogin(HttpServletRequest request, HttpServletResponse response, String username) {
+		ExcessiveLoginAttemptsLock userAttemptsInfo = (ExcessiveLoginAttemptsLock) redisTemplate.opsForValue().get("login_attempt:"+username);
+		
+	    if (userAttemptsInfo != null && userAttemptsInfo.getLockLogin() != null) {
+	    	String key = "login_attempt:" + username;
+	    	long currentTimeMinutes = System.currentTimeMillis() / 1000;
+	    	Long ttl = redisTemplate.getExpire(key, TimeUnit.SECONDS) + currentTimeMinutes;
+	        if (currentTimeMinutes >= ttl) {
+	        	userAttemptsInfo.setLoginAttempts(0);
+	        	userAttemptsInfo.setLockLogin(true);
+		        redisTemplate.opsForValue().set(key, userAttemptsInfo);
+		        response.setStatus(HttpServletResponse.SC_OK);
+	        }
+	    } else if (userAttemptsInfo == null || userAttemptsInfo.getLockLogin() == null) {
+	        return;
+	    }
+	}
+
 }

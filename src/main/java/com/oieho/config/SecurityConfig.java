@@ -2,6 +2,7 @@ package com.oieho.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -40,6 +41,7 @@ public class SecurityConfig {
 	private final AppProperties appProperties;
 	private final JwtTokenProvider jwtTokenProvider;
 	private final RefreshTokenRepository refreshTokenRepository;
+	private final RedisTemplate<String, Object> redisTemplate;
 	private final CustomUserDetailsService cusUserDetailsService;
 	private final CustomOAuth2UserService oAuth2UserService;
 	private final TokenAccessDeniedHandler tokenAccessDeniedHandler;
@@ -116,7 +118,7 @@ public class SecurityConfig {
 		AuthenticationManager authenticationManager = authenticationManagerBuilder.build();
 		http.authenticationManager(authenticationManager)
 				.addFilterAt(
-						new JwtAuthenticationFilter(authenticationManager, jwtTokenProvider, refreshTokenRepository),
+						new JwtAuthenticationFilter(authenticationManager, jwtTokenProvider, refreshTokenRepository, redisTemplate),
 						UsernamePasswordAuthenticationFilter.class)
 				.addFilterBefore(new JwtRequestFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
 		return http.build();
