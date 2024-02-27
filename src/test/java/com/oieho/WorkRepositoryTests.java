@@ -173,7 +173,11 @@ public class WorkRepositoryTests {
 					{ "photoshop" }, { "photoshop" }, { "photoshop" }, { "photoshop" }, { "photoshop" },
 					{ "photoshop" }, { "photoshop" }, { "photoshop" }, { "photoshop", "vscode", "python", "excel" },
 					{ "java", "HTML", "eclipse", "oracle", "jQuery" }, { "photoshop", "illustrator", "HTML", "CSS" } };
-			List<String> tagSet = new ArrayList<>();
+			List<String> toolSet = new ArrayList<>();
+			
+			for (int j = 0; j < toolArr[i].length; j++) {
+				toolSet.add(toolArr[i][j]);
+			}
 
 			String[][] tagStrArr = { { "포트폴리오", "블로그", "웹개발" }, { "김치", "삽화", "아트워크" }, { "쿠쿠", "B.I", "C.I" },
 					{ "스키", "고글" }, { "미술관", "큐비즘" }, { "아트워크", "심볼", "축제" }, { "아트워크", "종이비행기", "대한민국" },
@@ -188,17 +192,13 @@ public class WorkRepositoryTests {
 					{ "심리검사", "애플리케이션" }, { "이력서", "메일" }, { "포트폴리오", "테이블태그" } };
 			Set<String> tagSet2 = new LinkedHashSet<>();
 
-			for (int j = 0; j < toolArr[i].length; j++) {
-				tagSet.add(toolArr[i][j]);
-			}
-
 			for (int j = 0; j < 42; j++) {
 				String[] temp2 = tagStrArr[i];
 				Collections.addAll(tagSet2, temp2);
 			}
 
 			WorkBoard work = WorkBoard.builder().title(title[i]).portfolioContent(portfolioContent[i])
-					.description(descriptionArr[i]).category(categoryArr[i]).tools(tagSet).hashTag(tagSet2)
+					.description(descriptionArr[i]).category(categoryArr[i]).tools(toolSet).hashTag(tagSet2)
 					.hits(randomNumber).build();
 			LocalDateTime now = LocalDateTime.now();
 			LocalDateTime randomDate = now.minusDays(new Random().nextInt(30)).withHour(new Random().nextInt(24))

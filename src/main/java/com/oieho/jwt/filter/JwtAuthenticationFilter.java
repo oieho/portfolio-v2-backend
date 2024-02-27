@@ -153,6 +153,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 			attempts++;
 			userAttemptsInfo.setLoginAttempts(attempts);
 	    	redisTemplate.opsForValue().set(key, userAttemptsInfo);
+	    	response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 		} 
 	    if (attempts == maxAttempts && userAttemptsInfo.getLockLogin() == false) {
 	    	loginUser = new ExcessiveLoginAttemptsLock(username, attempts, lockLogin);
