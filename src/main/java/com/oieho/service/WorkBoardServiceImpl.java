@@ -13,15 +13,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.imageio.ImageIO;
-import javax.persistence.EntityManager;
 
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -32,7 +29,6 @@ import com.oieho.entity.Category;
 import com.oieho.entity.QWorkBoard;
 import com.oieho.entity.QWorkComment;
 import com.oieho.entity.WorkBoard;
-import com.oieho.entity.WorkComment;
 import com.oieho.entity.WorkImage;
 import com.oieho.repository.WorkBoardRepository;
 import com.oieho.repository.WorkImageRepository;
@@ -42,6 +38,7 @@ import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import net.coobird.thumbnailator.Thumbnailator;
 
@@ -557,6 +554,9 @@ public class WorkBoardServiceImpl implements WorkBoardService {
 			WorkImage thumbnailImage, List<WorkImage> boardImages, String description, Category category,
 			List<String> tools, Set<String> hashTag, Integer hits) {
 		boardRepository.updateWorkBoard(wno, portfolioContent, title, description, category, hits);
+		if(thumbnailImage != null) {
+			imageRepository.deleteByPathEndingWithThumbnailsAndWno(wno);
+		}
 		try {
 			if (thumbnailFile != null) {
 				deletePreviousThumbnail(wno);
@@ -610,27 +610,29 @@ public class WorkBoardServiceImpl implements WorkBoardService {
 			List<String> tools, Set<String> hashTag, Integer hits, WorkImage thumbnailImage,
 			List<WorkImage> boardImages) {
 		WorkBoard board = boardRepository.findById(wno).orElseThrow();
+		try {
 		if (thumbnailImage != null) {
 
-			List<WorkImage> existingWorkImages = board.getWorkImages();
+			List<WorkImage> existingWorkImages = new ArrayList<>();
 
-			if (existingWorkImages != null && !existingWorkImages.isEmpty()) {
-				// 이미지가 존재하는 경우
-				WorkImage existingWorkImage = existingWorkImages.get(0);
-				existingWorkImage.setImgName(thumbnailImage.getImgName());
-				existingWorkImage.setUuid(thumbnailImage.getUuid());
-				existingWorkImage.setPath(thumbnailImage.getPath());
+			if (!existingWorkImages.isEmpty()) {
+			    ((WorkImage) existingWorkImages).setImgName(thumbnailImage.getImgName());
+			    ((WorkImage) existingWorkImages).setUuid(thumbnailImage.getUuid());
+			    ((WorkImage) existingWorkImages).setPath(thumbnailImage.getPath());
+			    ((WorkImage) existingWorkImages).setWorkBoard(board);
 			} else {
-				// 이미지가 없는 경우
-				WorkImage newWorkImage = new WorkImage();
-				newWorkImage.setImgName(thumbnailImage.getImgName());
-				newWorkImage.setUuid(thumbnailImage.getUuid());
-				newWorkImage.setPath(thumbnailImage.getPath());
-				newWorkImage.setWorkBoard(board);
-				existingWorkImages.add(newWorkImage);
+			    WorkImage newWorkImage = new WorkImage();
+			    newWorkImage.setImgName(thumbnailImage.getImgName());
+			    newWorkImage.setUuid(thumbnailImage.getUuid());
+			    newWorkImage.setPath(thumbnailImage.getPath());
+			    newWorkImage.setWorkBoard(board);
+			    existingWorkImages.add(newWorkImage);
 			}
 
 			imageRepository.saveAll(existingWorkImages);
+		}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 		if (boardImages != null && !boardImages.isEmpty()) {

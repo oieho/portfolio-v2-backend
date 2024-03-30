@@ -2,7 +2,7 @@ package com.oieho.entity;
 
 import java.io.Serializable;
 
-import javax.persistence.Id;
+import jakarta.persistence.Id;
 
 import org.springframework.data.redis.core.RedisHash;
 

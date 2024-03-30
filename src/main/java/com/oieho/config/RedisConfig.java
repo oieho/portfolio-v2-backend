@@ -16,13 +16,13 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @EnableRedisRepositories(enableKeyspaceEvents = RedisKeyValueAdapter.EnableKeyspaceEvents.ON_STARTUP)
 public class RedisConfig {
 
-    @Value("${spring.redis.host}")
+    @Value("${spring.data.redis.host}")
     private String host;
 
-    @Value("${spring.redis.port}")
+    @Value("${spring.data.redis.port}")
     private int port;
     
-    @Value("${spring.redis.password}")
+    @Value("${spring.data.redis.password}")
     private String password;
 
     @Bean
@@ -42,7 +42,7 @@ public class RedisConfig {
     }
     
     @Bean
-	public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory){
+	public RedisTemplate<String, Object> redisTemplateForJson(RedisConnectionFactory redisConnectionFactory){
 		GenericJackson2JsonRedisSerializer genericJackson2JsonRedisSerializer = new GenericJackson2JsonRedisSerializer();
 		// Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer(ItemDto.class);
 		RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();

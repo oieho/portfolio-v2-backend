@@ -13,8 +13,10 @@ import com.oieho.entity.WorkImage;
 
 @Repository
 public interface WorkImageRepository extends JpaRepository<WorkImage, Long> {
-	List<WorkImage> findAllByWorkBoardWno(Long wno);
 
+	@Query("SELECT w FROM WorkImage w WHERE SUBSTRING(w.path, LENGTH(w.path) - 9) = 'thumbnails' AND w.workBoard.wno = :wno")
+    List<WorkImage> findThumbnailsByWno(@Param("wno") Long wno);
+	
 	@Query("SELECT DISTINCT i.path FROM WorkImage i")
 	List<String> findDistinctFolderPaths();
 
@@ -36,4 +38,11 @@ public interface WorkImageRepository extends JpaRepository<WorkImage, Long> {
 	@Query("UPDATE WorkImage wi SET wi.workBoard.wno = (wi.workBoard.wno - 1) WHERE wi.workBoard.wno > :wno")
     @Modifying
 	void shiftWorkImageWno(@Param("wno") Long wno);
+	
+
+    @Transactional
+    @Modifying
+    @Query("DELETE FROM WorkImage w WHERE SUBSTRING(w.path, LENGTH(w.path) - 9) = 'thumbnails' AND w.workBoard.wno = :wno")
+    void deleteByPathEndingWithThumbnailsAndWno(@Param("wno") Long wno);
+    
 }

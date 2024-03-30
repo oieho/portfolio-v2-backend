@@ -5,11 +5,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -107,7 +105,6 @@ public class UploadController {
 
 		// UUID
 		String uuid = UUID.randomUUID().toString();
-
 		// 썸네일 이미지 저장 경로
 		String thumbnailSaveName = uploadPath + "/" + folderPath + "/" + "thumbnails"
 				+ "/" + "s_" + uuid + "_" + fileName;
@@ -118,7 +115,7 @@ public class UploadController {
 	@GetMapping("/display/{wno}")
 	public ResponseEntity<byte[]> getFile(@PathVariable("wno") Long wno) {
 	    try {
-	        List<WorkImage> workImage = imageRepository.findAllByWorkBoardWno(wno);
+	        List<WorkImage> workImage = imageRepository.findThumbnailsByWno(wno);
 	        if (workImage == null || workImage.isEmpty()) {
 	            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	        }

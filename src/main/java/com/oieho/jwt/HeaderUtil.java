@@ -1,6 +1,6 @@
 package com.oieho.jwt;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 public class HeaderUtil {
     private final static String HEADER_AUTHORIZATION = SecurityConstants.TOKEN_HEADER;

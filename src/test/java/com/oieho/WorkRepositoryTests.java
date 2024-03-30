@@ -7,11 +7,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
-import java.util.UUID;
 import java.util.stream.IntStream;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +20,9 @@ import com.oieho.entity.WorkBoard;
 import com.oieho.entity.WorkImage;
 import com.oieho.repository.WorkBoardRepository;
 import com.oieho.repository.WorkImageRepository;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 
 @SpringBootTest
 public class WorkRepositoryTests {

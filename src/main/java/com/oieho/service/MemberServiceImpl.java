@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
-import javax.persistence.EntityNotFoundException;
-
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,6 +18,7 @@ import com.oieho.repository.DummyIPRepository;
 import com.oieho.repository.MemberRepository;
 import com.oieho.repository.RecoverPasswordRepository;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

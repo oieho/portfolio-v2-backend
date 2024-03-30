@@ -66,7 +66,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         LocalDateTime now = LocalDateTime.now();
         Member user = new Member(
                 userInfo.getId(),
-                userInfo.getName()+providerType.name().charAt(0),
+                userInfo.getName(),
                 userInfo.getEmail(),
                 RoleType.USER,
                 providerType,

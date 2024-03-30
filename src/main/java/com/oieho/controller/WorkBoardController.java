@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.constraints.NotNull;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -111,13 +111,13 @@ public class WorkBoardController {
 
 	@PostMapping("/register")
 	public ResponseEntity<?> register(
-			@RequestPart(value = "thumbnailFile", required = true) MultipartFile thumbnailFile,
-			@RequestParam("portfolioContent") String portfolioContent, @RequestParam("title") String title,
-			@RequestPart("thumbnailImage") WorkImage thumbnailImage,
-			@RequestPart(value = "boardImages", required = false) List<WorkImage> boardImages,
-			@RequestParam(value = "tools", required = false) List<String> tools,
-			@RequestParam("description") String description, @RequestParam("category") @NotNull Category category,
-			@RequestParam("hashTag") Set<String> hashTag, HttpServletRequest request) throws Exception {
+			@RequestPart(name =  "thumbnailFile", required = true) MultipartFile thumbnailFile,
+			@RequestParam(name = "portfolioContent") String portfolioContent, @RequestParam(name = "title") String title,
+			@RequestPart(name = "thumbnailImage") WorkImage thumbnailImage,
+			@RequestPart(name =  "boardImages", required = false) List<WorkImage> boardImages,
+			@RequestParam(name =  "tools", required = false) List<String> tools,
+			@RequestParam(name = "description") String description, @RequestParam(name = "category") @NotNull Category category,
+			@RequestParam(name = "hashTag") Set<String> hashTag, HttpServletRequest request) throws Exception {
 		ResponseEntity<?> block = commentController.blockIP(request);
 		if (block.getStatusCode() == HttpStatus.FORBIDDEN) {
 			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
@@ -133,17 +133,18 @@ public class WorkBoardController {
 	}
 
 	@PutMapping("/modify")
-	public ResponseEntity<?> modify(@RequestParam(value = "wno", required = true) String wno,
-			@RequestPart(value = "thumbnailFile", required = false) MultipartFile thumbnailFile,
-			@RequestParam("portfolioContent") String portfolioContent,
-			@RequestParam(value = "title", required = true) String title,
-			@RequestPart(value = "thumbnailImage", required = false) WorkImage thumbnailImage,
-			@RequestPart(value = "boardImages", required = false) List<WorkImage> boardImages,
-			@RequestParam(value = "tools", required = false) List<String> tools,
-			@RequestParam(value = "description", required = true) String description,
-			@RequestParam(value = "category", required = true) @NotNull Category category,
-			@RequestParam(value = "hashTag", required = true) Set<String> hashTag,
-			@RequestParam(value = "hits", required = true) String hits, HttpServletRequest request) throws Exception {
+	public ResponseEntity<?> modify(@RequestParam(name = "wno", required = true) String wno,
+	        @RequestPart(name = "thumbnailFile", required = false) MultipartFile thumbnailFile,
+	        @RequestParam(name = "portfolioContent") String portfolioContent,
+	        @RequestParam(name = "title", required = true) String title,
+	        @RequestPart(name = "thumbnailImage", required = false) WorkImage thumbnailImage,
+	        @RequestPart(name = "boardImages", required = false) List<WorkImage> boardImages,
+	        @RequestParam(name = "tools", required = false) List<String> tools,
+	        @RequestParam(name = "description", required = true) String description,
+	        @RequestParam(name = "category", required = true) @NotNull Category category,
+	        @RequestParam(name = "hashTag", required = true) Set<String> hashTag,
+	        @RequestParam(name = "hits", required = true) String hits, HttpServletRequest request) throws Exception {
+
 		Long parsedWno = Long.parseLong(wno);
 		Integer parsedHits = Integer.parseInt(hits);
 		ResponseEntity<?> block = commentController.blockIP(request);

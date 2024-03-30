@@ -5,11 +5,10 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import com.oieho.entity.Count;
 
-public interface CountRepository extends JpaRepository<Count, Long> {
+public interface CountRepository extends JpaRepository<Count, Integer> {
 	// JPA 쿼리메서드를 사용하여 사용자 정보 조회
 	@Query("SELECT todayVar FROM Count")
 	public Count findByOne();

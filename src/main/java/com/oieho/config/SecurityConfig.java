@@ -7,6 +7,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -80,35 +81,21 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http
-        .cors().and().csrf().disable()
-        .sessionManagement()
-        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-    .and()
-        .formLogin().disable()
-        .httpBasic().disable()
-        .exceptionHandling()
-        .authenticationEntryPoint(new RestAuthenticationEntryPoint())
-        .accessDeniedHandler(tokenAccessDeniedHandler)
-    .and()
-        .authorizeRequests()
-        .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-        .antMatchers("*").hasAnyAuthority(RoleType.USER.getCode())
-        .antMatchers("/**/admin/**").hasAnyAuthority(RoleType.ADMIN.getCode())
-
-    .and()
-        .oauth2Login()
-        .authorizationEndpoint()
-        .baseUri("/oauth2/authorization")
-        .authorizationRequestRepository(oAuth2AuthorizationRequestBasedOnCookieRepository)
-    .and()
-        .redirectionEndpoint()
-        .baseUri("/*/oauth2/code/*")
-    .and()
-        .userInfoEndpoint()
-        .userService(oAuth2UserService)
-    .and()
-        .successHandler(oAuth2AuthenticationSuccessHandler())
-        .failureHandler(oAuth2AuthenticationFailureHandler());
+		.csrf(AbstractHttpConfigurer::disable)
+		.cors(cors -> cors.configurationSource(corsConfigurationSource()))
+		.formLogin(AbstractHttpConfigurer::disable)
+		.httpBasic(AbstractHttpConfigurer::disable)
+		.authorizeHttpRequests(auth -> auth
+		.requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
+		.requestMatchers("**").permitAll())
+		.exceptionHandling(c -> c.authenticationEntryPoint(new RestAuthenticationEntryPoint()).accessDeniedHandler(tokenAccessDeniedHandler))
+		.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+		.oauth2Login(oauth2 -> oauth2
+		.authorizationEndpoint(authorizationEndpointConfigurer -> authorizationEndpointConfigurer.baseUri("/oauth2/authorization").authorizationRequestRepository(oAuth2AuthorizationRequestBasedOnCookieRepository))
+		.redirectionEndpoint(redirectionEndpointConfigurer -> redirectionEndpointConfigurer.baseUri("/*/oauth2/code/*"))
+		.userInfoEndpoint(userInfoEndpointConfigurer -> userInfoEndpointConfigurer.userService(oAuth2UserService))
+		.successHandler(oAuth2AuthenticationSuccessHandler())
+		.failureHandler(oAuth2AuthenticationFailureHandler()));
 
 		// AuthenticationManager설정
 		AuthenticationManagerBuilder authenticationManagerBuilder = http

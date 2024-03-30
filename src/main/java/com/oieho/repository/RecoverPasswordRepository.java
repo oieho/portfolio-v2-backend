@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.oieho.entity.RecoverPassword;
 
-public interface RecoverPasswordRepository extends JpaRepository<RecoverPassword, Long> {
+public interface RecoverPasswordRepository extends JpaRepository<RecoverPassword, String> {
 
 	RecoverPassword findByResetToken(String token);
 
