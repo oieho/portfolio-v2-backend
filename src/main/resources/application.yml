@@ -86,7 +86,7 @@ jwt:
 app:
   oauth2:
     authorizedRedirectUris:
-      - http://54.180.58.152:3000/oauth/redirect
+      - http://52.78.70.226:3000/oauth/redirect
       
 logging:
   level:

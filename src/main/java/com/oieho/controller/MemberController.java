@@ -252,7 +252,7 @@ public class MemberController {
 	        helper.setTo(email);
 	        helper.setSubject("OIEHO 비밀번호 찾기 인증 메일입니다.");
 	        helper.setText("<p>비밀번호 찾기를 요청하셨을 경우 아래에 있는 인증버튼을 누르시기 바랍니다.</p><p>인증완료 후 <b>홈페이지로 돌아간 후 비밀번호를 변경</b>하시기 바랍니다.</p>"
-	            + "<a href='http://54.180.58.152:8088/members/password/verify/"+token+"'><br><span style=\"width:120%;height:100%;border: 1px solid #000; padding: 0.6rem;border-radius:1rem;background-color:black;color:#fff;font-size: 0.85rem;\">인증하기</span></a>", true);
+	            + "<a href='http://52.78.70.226:8088/members/password/verify/"+token+"'><br><span style=\"width:120%;height:100%;border: 1px solid #000; padding: 0.6rem;border-radius:1rem;background-color:black;color:#fff;font-size: 0.85rem;\">인증하기</span></a>", true);
 	        javaMailSender.send(message);
 	    } catch (MessagingException e) {
 	        e.printStackTrace();
@@ -283,7 +283,6 @@ public class MemberController {
 	}
 	@GetMapping("/password/authorization/{token}")
 	public ResponseEntity<Boolean> authorization(@PathVariable("token") String token) throws Exception {
-		RecoverPassword resetToken = recoverRepository.findByResetToken(token);
 		String validToken = memberService.readSearchPasswordTokenByToken(token);
 		if (validToken == null) {
 			return new ResponseEntity<Boolean>(true,HttpStatus.OK);
