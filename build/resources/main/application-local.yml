@@ -1,0 +1,11 @@
+spring:
+  data:
+    redis:
+      host: 52.78.70.226
+      port: 6379
+      password: whwhwjs123
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://localhost:3306/oieho
+    username: root
+    password: root

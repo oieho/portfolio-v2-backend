@@ -40,3 +40,4 @@ out/
 
 ## environment configuration files ##
 src/main/resources/application-local.yml
+src/main/resources/application-secret.yml

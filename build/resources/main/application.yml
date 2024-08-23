@@ -1,0 +1,57 @@
+server:
+  port: 8088
+spring:
+  profiles:
+    active: local # default
+    group:
+      local:
+        - local
+      prod:
+        - secret
+  servlet:
+    multipart:
+      enabled: true
+      location: ${user.home}/uploadImgs
+      max-request-size: 30MB
+      max-file-size: 10MB
+      
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        show_sql: info
+        format_sql: true
+        
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: oiehomail
+    password: hgigfmsyxuebauyd
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+jwt:
+  authToken: 236979CB6F1AD6B6A6184A31E6BE37DB3818CC36871E26235DD67DCFE4041492
+  accessExpire: 3600000 # 1시간
+  refreshExpire: 1209600000 # 2주
+   
+app:
+  oauth2:
+    authorizedRedirectUris:
+      - http://52.78.70.226:3000/oauth/redirect
+      
+logging:
+  level:
+    root: info
+  logback:
+    rollingpolicy:
+      max-history: 7
+
+    
+upload:
+  path: static/boardImgs
