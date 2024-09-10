@@ -141,7 +141,8 @@ public class MemberServiceImpl implements MemberService {
 	
 	// MemberFindPassword
 	@Override
-	public String existsByUserIdAndUserEmail(String userId, String userEmail) throws Exception {
+	public Boolean existsByUserIdAndUserEmail(String userId, String userEmail) throws Exception {
+		System.out.println("userMail::"+userEmail);
 		return memberRepository.existsByUserIdAndUserEmail(userId, userEmail);
 	}
 	@Override

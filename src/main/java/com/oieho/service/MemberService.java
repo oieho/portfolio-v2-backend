@@ -43,7 +43,7 @@ public interface MemberService {
 	public Member findUserIdByUserName(String userName) throws Exception;
 	
 	// MemberFindPassword
-	public String existsByUserIdAndUserEmail(String userId, String userEmail) throws Exception;
+	public Boolean existsByUserIdAndUserEmail(String userId, String userEmail) throws Exception;
 	public HashMap<String,Object> chkDuplicatedIdOnFindPassword(String userId) throws Exception;
 	public String readSearchPasswordTokenByToken(String token) throws Exception;
 	public void removeFindPasswordToken(String resetToken) throws Exception;

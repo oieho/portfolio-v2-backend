@@ -237,8 +237,8 @@ public class MemberController {
 	public ResponseEntity<?> extractsEmail(@RequestBody Member user) throws Exception {
 		String id = (String) user.getUserId();
 		String email = (String) user.getUserEmail();
-		String validEmail = memberService.existsByUserIdAndUserEmail(id, email);
-		if (validEmail == null) {
+		Boolean validEmail = memberService.existsByUserIdAndUserEmail(id, email);
+		if (!validEmail) {
 	        return new ResponseEntity<Boolean>(false, HttpStatus.BAD_REQUEST);
 	    }
 		String token = UUID.randomUUID().toString();

@@ -69,7 +69,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 	// Member Find Password
 	public Member findUserEmailByUserId(String userId);
 
-	public String existsByUserIdAndUserEmail(@Param("userId") String userId, @Param("userEmail") String userEmail);
+	public Boolean existsByUserIdAndUserEmail(@Param("userId") String userId, @Param("userEmail") String userEmail);
 
 	@Query("SELECT rp.resetToken FROM RecoverPassword rp WHERE rp.resetToken = :token")
 	public String existsBySearchPasswordToken(@Param("token") String token);

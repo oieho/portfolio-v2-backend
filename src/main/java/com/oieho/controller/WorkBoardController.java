@@ -186,14 +186,14 @@ public class WorkBoardController {
 
 	@GetMapping("/prevnextImgs")
 	public ResponseEntity<List<Map<String, Object>>> getAllBoards(
-	    @RequestParam(required = false) String searchType,
-	    @RequestParam(required = false) String keyword,
-	    @RequestParam(required = false) String title,
-	    @RequestParam(required = false) String count,
-	    @RequestParam(required = false) String regDate,
-	    @RequestParam(required = false) List<Long> selected,
-	    @RequestParam(required = false) String toolOrHashTag,
-	    @RequestParam(required = false) Boolean isModified) {
+	    @RequestParam(name="searchType", required = false) String searchType,
+	    @RequestParam(name="keyword", required = false) String keyword,
+	    @RequestParam(name="title", required = false) String title,
+	    @RequestParam(name="count", required = false) String count,
+	    @RequestParam(name="regDate", required = false) String regDate,
+	    @RequestParam(name="selected", required = false) List<Long> selected,
+	    @RequestParam(name="toolOrHashTag", required = false) String toolOrHashTag,
+	    @RequestParam(name="isModified", required = false) Boolean isModified) {
 	    try {
 	        List<Map<String, Object>> boards;
 	        if (isModified != null && isModified) {
